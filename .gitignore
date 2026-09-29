@@ -1,0 +1,11 @@
+# Secrets & local config
+.env
+*.env
+*.key
+*_key
+secrets/
+Commands/*RAW*
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp

@@ -1,0 +1,1248 @@
+   20  sudo cp community-rules/* /etc/snort/rules/
+   26  curl google.com
+   27  curl example.com
+   30  grep -E '^[[:space:]]*LogLevel' /etc/ssh/sshd_config
+   33  sudo cp /opt/splunkforwarder/etc/system/local/inputs.conf \\n/opt/splunkforwarder/etc/system/local/inputs.conf.bak
+   36  sudo /opt/splunkforwarder/bin/splunk btool inputs list --debug | grep -A 5 -E '/var/log/(auth.log|audit/audit.log|syslog)'
+   42  curl "http://192.168.127.130:8080/beacon?id=LINUX01"
+   43  while true; do\n  curl -s "http://192.168.127.130:8080/beacon?id=LINUX01"\n  sleep 30\ndone
+   69  sudo grep "Accepted password" /var/log/auth.log | tail -5
+   70  sudo ausearch -k process_exec -ts recent | grep -E 'whoami|hostname|id' | tail -20
+   76  sudo grep "cron" /var/log/audit/audit.log | tail -20
+   77  for i in {1..5}; do\n  curl -s "http://192.168.127.130:8080/beacon?id=LINUX01&seq=$i"\n  sleep 10\ndone
+   79  sudo cp /etc/ssh/sshd_config ~/Resilient_SOC_Case_001/Linux/sshd_config\nsudo cp /etc/audit/rules.d/lab.rules ~/Resilient_SOC_Case_001/Linux/lab.rules\nsudo cp /opt/splunkforwarder/etc/system/local/inputs.conf ~/Resilient_SOC_Case_001/Linux/inputs.conf
+   80  sudo grep -E "Failed password|Accepted password" /var/log/auth.log \\n> ~/Resilient_SOC_Case_001/Evidence/ssh_authentication.txt
+   81  sudo cp /var/log/auth.log ~/Resilient_SOC_Case_001/Evidence/auth.log\nsudo cp /var/log/audit/audit.log ~/Resilient_SOC_Case_001/Evidence/audit.log\nsudo cp /var/log/syslog ~/Resilient_SOC_Case_001/Evidence/syslog
+   82  sudo grep -E "Failed password|Accepted password" /var/log/auth.log \\n> ~/Resilient_SOC_Case_001/Evidence/ssh_authentication.txt
+   86  cp ~/resilient-web/access.log ~/Resilient_SOC_Case_001/Evidence/access.log
+   88  sudo ausearch -k process_exec -ts recent | \\ngrep -E 'whoami|hostname|crontab|ssh|sudo' \\n> ~/Resilient_SOC_Case_001/Evidence/process_exec_scenario.txt
+   91  cd ~\nzip -r Resilient_SOC_Case_001_Kali.zip Resilient_SOC_Case_001
+   92  sudo cp ~/Resilient_SOC_Case_001/Evidence/audit.log ~/Resilient_SOC_Case_001/Evidence/audit.log.copy\nsudo cp ~/Resilient_SOC_Case_001/Evidence/auth.log ~/Resilient_SOC_Case_001/Evidence/auth.log.copy\nsudo cp ~/Resilient_SOC_Case_001/Evidence/syslog ~/Resilient_SOC_Case_001/Evidence/syslog.copy\nsudo chown kali:kali \\n~/Resilient_SOC_Case_001/Evidence/audit.log.copy \\n~/Resilient_SOC_Case_001/Evidence/auth.log.copy \\n~/Resilient_SOC_Case_001/Evidence/syslog.copy
+   93  cd ~\nzip -r Resilient_SOC_Case_001_Kali.zip Resilient_SOC_Case_001 -x \\n"Resilient_SOC_Case_001/Evidence/audit.log" \\n"Resilient_SOC_Case_001/Evidence/auth.log" \\n"Resilient_SOC_Case_001/Evidence/syslog"
+   97  cd ~\nrm -f Resilient_SOC_Case_001_Kali.zip\nzip -r Resilient_SOC_Case_001_Kali.zip Resilient_SOC_Case_001
+   98  unzip -l ~/Resilient_SOC_Case_001_Kali.zip
+   99  ls -lh ~/Resilient_SOC_Case_001_Kali.zip
+  100  cp ~/Resilient_SOC_Case_001_Kali.zip ~/Desktop/
+  112  grep -E "sshd|Failed password|Accepted password|session opened|session closed" \\n~/Resilient_SOC_Case_001/Evidence/auth.log
+  117  grep -Ei 'whoami|hostname|(^|[^a-z])id([^a-z]|$)' \\n~/Resilient_SOC_Case_001/Evidence/process_exec_scenario.txt
+  118  grep -n "cron_changes" ~/Resilient_SOC_Case_001/Evidence/cron_changes.txt | head -20
+  120  grep -n "dummy_check.sh" ~/Resilient_SOC_Case_001/Evidence/audit.log | tail -20
+  121  grep -nE 'dummy_check|resilient_cron|/tmp/resilient_cron' \\n~/Resilient_SOC_Case_001/Evidence/audit.log | tail -20
+  136  grep 'ses=3' ~/Resilient_SOC_Case_001/Evidence/process_exec_scenario.txt | \\ngrep -E '04:3|03:3|04:4'
+  138  sudo ausearch -ts 04:33:00 -te 04:38:00 -m EXECVE | grep 'a0='
+  140  sudo ausearch -k cron_changes -i | grep -E 'time->|AUID=|EXECVE|SYSCALL|PATH'
+  141  grep -nE 'time->|comm="crontab"|exe="/usr/bin/crontab"|key="cron_changes"|AUID=|PATH' \\n~/Resilient_SOC_Case_001/Evidence/cron_changes.txt
+  147  cd ~\nrm -f Resilient_SOC_Case_001_FINAL.zip\nzip -r Resilient_SOC_Case_001_FINAL.zip Resilient_SOC_Case_001
+  148  unzip -t Resilient_SOC_Case_001_FINAL.zip
+  149  ls -lh ~/Resilient_SOC_Case_001_FINAL.zip
+  150  cp ~/Resilient_SOC_Case_001_FINAL.zip ~/Desktop/
+  157  docker --version
+  159  docker compose version
+  160  docker --version
+  161  sudo systemctl status docker --no-pager
+  162  docker info
+  163  dpkg -l | grep -E 'docker|containerd|compose'
+  164  docker ps -a
+  165  docker images
+  166  sudo usermod -aG docker $USER
+  167  newgrp docker
+  168  docker info
+  169  docker ps
+  170  sudo apt update\nsudo apt install -y docker-compose
+  171  docker-compose --version
+  172  mkdir -p ~/resilient-soar\ncd ~/resilient-soar
+  173  docker-compose version
+  174  cd ~/resilient-soar\nsudo apt install -y jq git
+  175  git clone https://github.com/StrangeBeeCorp/docker.git
+  177  cd ~/resilient-soar/docker/testing
+  179  cd ~/resilient-soar/docker/testing\ncat README.md
+  181  cd ~/resilient-soar/docker/testing\ngrep -nE 'mem_limit|cpus|memory|deploy|reservations|limits' docker-compose.yml
+  182  sed -n '1,220p' docker-compose.yml
+  183  cd ~/resilient-soar/docker/testing\nsed -n '1,100p' docker-compose.yml
+  184  cd ~/resilient-soar/docker/testing\ncat dot.env.template
+  186  cd ~/resilient-soar/docker/testing\ngrep -RInE 'cassandra_image_version|elasticsearch_image_version|thehive_image_version|cortex_image_version|nginx_image_version' .
+  187  cd ~/resilient-soar/docker/testing\nbash ./scripts/init.sh
+  188  cd ~/resilient-soar/docker/testing\nls -la .env
+  190  docker compose config --services
+  191  cd ~/resilient-soar/docker/testing\nsed -i '/UID=XXXX/d;/GID=XXXX/d' .env
+  192  grep -E '^(UID|GID|.*_image_version)' .env
+  193  docker compose up -d cassandra elasticsearch
+  194  docker compose ps
+  195  docker stats --no-stream
+  196  docker compose ps
+  197  docker stats --no-stream
+  198  docker logs cassandra --tail 50
+  199  docker inspect --format='{{json .State.Health}}' cassandra
+  200  docker stats --no-stream
+  201  cd ~/resilient-soar/docker/testing\ncp docker-compose.yml docker-compose.yml.bak
+  202  docker compose stop cassandra elasticsearch
+  203  docker compose ps
+  204  cd ~/resilient-soar/docker/testing
+  205  nano docker-compose.yml
+  206  docker compose config -q
+  207  cd ~/resilient-soar/docker/testing\nsed -i 's/^wservices:/services:/' docker-compose.yml
+  208  docker compose config -q
+  209  docker compose up -d cassandra elasticsearch
+  210  docker compose ps
+  211  docker stats --no-stream
+  212  docker compose ps
+  213  docker stats --no-stream
+  214  docker compose ps
+  215  docker logs elasticsearch --tail 80
+  216  docker compose ps
+  217  docker logs elasticsearch --tail 80
+  218  docker inspect --format='{{.RestartCount}}' elasticsearch
+  219  docker compose config | sed -n '/elasticsearch:/,/thehive:/p' | grep -E 'ES_JAVA_OPTS|memswap|memory'
+  220  docker inspect elasticsearch --format '{{range .Config.Env}}{{println .}}{{end}}' | grep -E 'ES_JAVA_OPTS|JAVA_TOOL_OPTIONS|ES_JAVA'
+  221  cd ~/resilient-soar/docker/testing\ngrep -n "ES_JAVA_OPTS" docker-compose.yml
+  222  cd ~/resilient-soar/docker/testing\nsed -i 's/- ES_JAVA_OPTS=-Xms521G -Xmx521G/- ES_JAVA_OPTS=-Xms512m -Xmx512m/' docker-compose.yml
+  223  grep -n "ES_JAVA_OPTS" docker-compose.yml
+  224  docker compose config | grep "ES_JAVA_OPTS"
+  225  docker compose up -d --force-recreate elasticsearch
+  226  docker inspect elasticsearch --format '{{range .Config.Env}}{{println .}}{{end}}' | grep ES_JAVA_OPTS
+  227  docker compose ps
+  228  docker compose up -d thehive
+  229  docker compose ps
+  230  cd ~/resilient-soar/docker/testing\ndocker compose ps
+  231  docker compose ps
+  232  docker logs thehive --tail 80
+  233  docker compose ps
+  234  docker inspect --format='{{.State.Status}} | {{.State.Health.Status}}' thehive
+  235  docker stats --no-stream
+  237  docker compose stop thehive
+  239  docker stats --no-stream
+  241  docker system df
+  242  cd ~/resilient-soar/docker/testing\ndocker compose up -d cortex
+  243  docker compose ps
+  244  docker compose up -d cortex
+  245  newgrp docker
+  246  docker ps
+  247  docker compose ps
+  250  getent group docker
+  251  ls -l /var/run/docker.sock
+  252  sudo docker ps
+  253  sudo chown root:docker /var/run/docker.sock\nsudo chmod 660 /var/run/docker.sock
+  254  ls -l /var/run/docker.sock
+  255  docker ps
+  256  ls -l /var/run/docker.sock\ndocker ps
+  257  docker ps
+  258  docker stats --no-stream
+  260  curl -s http://127.0.0.1:9001/api/status
+  261  curl -s http://192.168.1.11:9001/api/status
+  262  curl -s http://127.0.0.1:9001/cortex/api/status
+  263  curl -s http://192.168.1.11:9001/cortex/api/status
+  264  cd ~/resilient-soar/docker/testing\ndocker compose logs cortex --tail 40
+  265  docker exec cortex ls -la /opt/Cortex-Analyzers
+  266  docker exec cortex sh -c 'find / -maxdepth 4 -type d \( -iname "*analy*" -o -iname "*responder*" \) 2>/dev/null | head -50'
+  267  docker exec cortex sh -c 'find / -maxdepth 5 -type f \( -iname "*analyzer*" -o -iname "*responder*" \) 2>/dev/null | head -50'
+  268  cd ~/resilient-soar/docker/testing\ngrep -nE 'analy|responder|neurons|cortex' docker-compose.yml
+  269  cd ~/resilient-soar/docker/testing\nls -la cortex/neurons
+  270  find cortex/neurons -maxdepth 2 -type f | head -50
+  271  cd ~/resilient-soar/docker/testing\ncat cortex/config/application.conf
+  272  docker exec cortex sh -c 'wget -qO- https://download.thehive-project.org/analyzers.json | head -c 500'
+  273  docker exec cortex sh -c 'curl -fsSL https://download.thehive-project.org/analyzers.json | head -c 500'
+  274  docker compose logs cortex --since 10m | grep -Ei 'analyzer|catalog|download|error|warn'
+  275  ls -lah ~/resilient-soar/docker/testing/cortex/neurons
+  276  sed -n '130,165p' docker-compose.yml
+  277  grep -n "cortex_docker_job_directory" .env
+  278  ls -lah cortex
+  279  ls -lah cortex/config
+  280  grep -nEi 'analyzer|responder|neuron' cortex/config/application.conf
+  281  mkdir -p cortex/neurons/analyzers cortex/neurons/responders
+  282  ls -lah cortex/neurons
+  283  docker compose restart cortex
+  284  ls -lah cortex/neurons/analyzers
+  285  docker exec cortex sh -c 'ls -lah /opt/cortexneurons && find /opt/cortexneurons -maxdepth 2 -type f | head -30'
+  286  sudo docker exec cortex sh -c 'ls -lah /opt/cortexneurons && find /opt/cortexneurons -maxdepth 2 -type f | head -30'
+  287  sudo docker exec cortex sh -c 'find /opt /usr/local /app -maxdepth 4 -type f \( -iname "*analyzer*" -o -iname "*neuron*" \) 2>/dev/null | head -50'
+  288  grep -nE 'cortex_image_version|cortex_docker_job_directory' .env
+  289  grep -nEi 'job|runner' cortex/config/application.conf
+  290  cat cortex/config/application.conf
+  291  sudo docker logs cortex --tail 100 | grep -Ei 'config|analyzer|responder|error|exception'
+  292  sudo docker exec cortex sh -c 'curl -s http://localhost:9001/cortex/api/analyzer?range=all | head -c 1000'
+  293  sudo docker exec cortex sh -c 'curl -s http://localhost:9001/cortex/api/analyzer?range=all'
+  294  sudo docker compose logs cortex --since 5m | grep -Ei 'C25CortexAnalyzer|analyzer.*enabled|analyzer.*disabled|organization'
+  295  sed -i 's#cortex_docker_job_directory=.*#cortex_docker_job_directory=/home/kali/resilient-soar/docker/testing/cortex/cortex-jobs#' .env
+  296  grep -n "cortex_docker_job_directory" .env
+  297  sudo docker compose up -d --force-recreate cortex
+  298  sudo docker compose ps cortex
+  299  sudo docker compose logs cortex --tail 30
+  300  sudo docker compose ps cortex
+  301  sudo docker compose logs cortex --since 2m | grep -Ei 'analyzer|responder|catalog'
+  302  sudo ls -lah cortex/cortex-jobs
+  303  sudo chown -R 1000:1000 cortex/cortex-jobs
+  304  ls -ld cortex/cortex-jobs
+  305  sudo docker compose logs cortex --since 1m | grep -Ei 'TestAnalyzer|job|error|failed'
+  306  sudo docker exec cortex sh -c 'id && ls -ld /tmp/cortex-jobs && touch /tmp/cortex-jobs/test_write && ls -l /tmp/cortex-jobs/test_write'
+  307  sudo chmod 777 cortex/cortex-jobs
+  308  ls -ld cortex/cortex-jobs
+  309  sudo docker compose logs cortex --since 1m | grep -A8 -B3 -Ei 'TestAnalyzer|AccessDenied|Worker execution fails|Failure'
+  310  sudo docker compose logs cortex --since 2m | grep -A15 -B5 -Ei 'TestAnalyzer|AccessDenied|Worker execution fails|docker.*error|pull|permission'
+  311  sudo docker compose ps
+  312  grep -nE '^  thehive:|thehiveproject/thehive|container_name: thehive' docker-compose.yml
+  313  sed -n '84,129p' docker-compose.yml
+  314  sudo docker compose up -d thehive
+  315  sudo docker compose ps thehive
+  316  sudo docker compose logs thehive --tail 30
+  317  udo docker compose logs thehive --tail 30                                                      
+  318  cd ~/resilient-soar/docker/testing
+  319  sudo docker compose ps thehive
+  320  docker ps
+  321  docker compose ps
+  324  ls -l /var/run/docker.sock
+  325  getent group docker
+  326  sudo docker compose ps
+  327  sudo docker inspect thehive --format '{{.State.Health.Status}}'
+  328  sudo docker logs --tail 100 thehive
+  329  sudo stat -c '%U %G %a %n' /var/run/docker.sock
+  330  sudo systemctl status docker --no-pager
+  331  ps -ef | grep -E 'dockerd|splunkfwd' | grep -v grep
+  332  sudo chown root:docker /var/run/docker.sock
+  333  sudo chmod 660 /var/run/docker.sock
+  334  ls -l /var/run/docker.sock
+  335  docker ps
+  336  docker compose ps
+  337  docker network ls
+  338  docker inspect thehive --format '{{json .NetworkSettings.Networks}}'
+  339  docker inspect cortex --format '{{json .NetworkSettings.Networks}}'
+  340  docker network ls
+  341  docker inspect thehive --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}}{{"\n"}}{{end}}'
+  342  docker inspect cortex --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}}{{"\n"}}{{end}}'
+  343  curl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  http://192.168.1.11:9001/cortex/api/status
+  344  docker exec -it thehive sh
+  345  docker exec thehive grep -nE 'admin|password|user|organisation|organization' /etc/thehive/application.conf | head -50
+  346  docker logs thehive 2>&1 | grep -Ei 'bootstrap|admin|account|user|password|organization' | tail -50
+  347  docker exec thehive sh -c 'curl -s -o /dev/null -w "%{http_code}\n" http://cortex:9001/cortex/api/status'
+  348  docker exec thehive sh -c 'curl -s http://cortex:9001/api/analyzer/type/ip -H "Authorization: Bearer <REDACTED>"'
+  349  docker exec -e CORTEX_API_KEY="<REDACTED>" thehive sh -c \\n'curl -s http://cortex:9001/cortex/api/analyzer/type/ip \\n-H "Authorization: Bearer <REDACTED>"'
+  351  docker exec -e CORTEX_API_KEY="<REDACTED>" thehive sh -c \\n'curl -s http://cortex:9001/cortex/api/analyzer/type/ip \\n-H "Authorization: Bearer <REDACTED>"'
+  353  docker exec -e CORTEX_API_KEY="<REDACTED>" thehive sh -c \\n'curl -s http://cortex:9001/cortex/api/analyzer/type/ip \\n-H "Authorization: Bearer <REDACTED>"'
+  354  docker logs thehive --since 10m 2>&1 | grep -i -E 'cortex|analyzer|connector' | tail -80
+  356  docker exec -e CORTEX_API_KEY="<REDACTED>" thehive sh -c \\n'curl -s -i http://cortex:9001/cortex/api/analyzer?range=all \\n-H "Authorization: Bearer <REDACTED>"'
+  357  cd ~/resilient-soar/docker/testing
+  358  docker compose ps
+  359  docker volume ls | grep -E 'thehive|cortex|cassandra|elasticsearch'
+  360  docker compose config --services
+  361  docker volume ls
+  362  docker compose config
+  363  cd ~/resilient-soar/docker/testing
+  364  cp -a thehive/config thehive/config.backup-$(date +%F-%H%M)
+  365  cp -a cortex/config cortex/config.backup-$(date +%F-%H%M)
+  366  find thehive/config -maxdepth 2 -type f -print
+  367  find cortex/config -maxdepth 2 -type f -print
+  368  docker exec cortex sh -c "grep -vE '^[[:space:]]*(#|$)' /etc/cortex/application.conf | head -100"
+  369  docker logs --tail 100 cortex
+  370  docker logs --tail 100 thehive
+  371  docker exec cortex sh -c "grep -vE '^[[:space:]]*(#|$)' /etc/cortex/application.conf | head -100"
+  372  docker logs --tail 100 cortex
+  373  docker logs --tail 100 thehive
+  374  grep -RniE 'cortex|connector' ~/resilient-soar/docker/testing/thehive/config
+  375  docker exec thehive sh -c "grep -RniE 'cortex|connector' /etc/thehive 2>/dev/null"
+  376  docker exec thehive getent hosts cortex
+  377  docker exec thehive sh -c "curl -s -o /dev/null -w '%{http_code}\n' http://cortex:9001/cortex/api/status"
+  378  docker logs thehive 2>&1 | grep -iE 'cortex|analyzer|connector|exception|error' | tail -100
+  379  docker logs thehive 2>&1 | grep -iE 'List Cortex analyzers|fails on Cortex' | tail -30
+  380  curl -s http://127.0.0.1:9000/thehive/api/v1/admin/config/cortex
+  381  curl -i http://127.0.0.1:9000/thehive/api/v1/admin/config/cortex
+  382  grep -RniE 'cortex.servers|Cortex|apiKey|apikey|cortex' ~/resilient-soar/docker/testing/thehive/config
+  383  grep -RniE 'Cortex' ~/resilient-soar/docker/testing -n --exclude-dir='logs' --exclude='*.backup*'
+  384  docker logs thehive 2>&1 | grep -F 'cortex.servers config was updated' | tail -20
+  385  cd ~/resilient-soar/docker/testing
+  386  sed -n '341,365p' scripts/test_init_thehive.sh
+  387  sed -n '365,390p' scripts/test_init_thehive.sh
+  388  sed -n '390,430p' scripts/test_init_thehive.sh
+  389  grep -n -iE '"key"|apiKey|apikey' scripts/test_init_thehive.sh | head -20
+  390  sed -n '430,455p' scripts/test_init_thehive.sh
+  391  test -f /tmp/cortex_key && echo "KEY_EXISTS" || echo "KEY_MISSING"
+  392  KEY=$(cat /tmp/cortex_key)\n\ncurl -sS -o /tmp/cortex_put_response.txt -w "HTTP %{http_code}\n" \\n  -X PUT \\n  "http://127.0.0.1:9000/thehive/api/v1/admin/config/cortex" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: admin" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  --data-binary @- <<EOF\n{\n  "statusCheckInterval": "1 minute",\n  "refreshDelay": "5 seconds",\n  "maxRetryOnError": 3,\n  "jobTimeout": "3 hours",\n  "servers": [\n    {\n      "name": "Cortex",\n      "url": "http://cortex:9001/cortex",\n      "includedTheHiveOrganisations": ["*"],\n      "excludedTheHiveOrganisations": [],\n      "wsConfig": {\n        "timeout": {\n          "connection": "2 minutes",\n          "idle": "2 minutes",\n          "request": "2 minutes"\n        },\n        "followRedirects": true,\n        "useProxyProperties": true\n      },\n      "auth": {\n        "type": "bearer",\n        "key": "$KEY"\n      }\n    }\n  ]\n}\nEOF\n\ncat /tmp/cortex_put_response.txt
+  393  docker logs --since 30s thehive 2>&1 | grep -F "cortex.servers config was updated"
+  394  KEY=$(curl -ks -u admin:<THEHIVE_PASSWORD> -X POST \\n  "https://127.0.0.1/cortex/api/user/thehive/key/renew" \\n  -d '')\n\necho "$KEY"
+  395  curl -sS -w "\nHTTP %{http_code}\n" \\n  -X PUT \\n  "http://127.0.0.1:9000/thehive/api/v1/admin/config/cortex" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: admin" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  --data-binary @- <<EOF\n{\n  "statusCheckInterval": "1 minute",\n  "refreshDelay": "5 seconds",\n  "maxRetryOnError": 3,\n  "jobTimeout": "3 hours",\n  "servers": [\n    {\n      "name": "Cortex",\n      "url": "http://cortex:9001/cortex",\n      "includedTheHiveOrganisations": ["*"],\n      "excludedTheHiveOrganisations": [],\n      "auth": {\n        "type": "bearer",\n        "key": "$KEY"\n      }\n    }\n  ]\n}\nEOF
+  396  docker logs --since 30s thehive 2>&1 | grep -iE 'cortex.servers config was updated|List Cortex analyzers|ApplicationError'
+  397  curl -s -u admin:<THEHIVE_PASSWORD> \\n  "https://127.0.0.1/cortex/api/analyzer?range=all" | grep -o '"name":"TestAnalyzer_1_0"'
+  398  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/analyzer?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  399  docker exec thehive sh -c '\ncurl -sS \\n  "http://cortex:9001/cortex/api/analyzer?range=all" \\n  -H "Authorization: Bearer '"$KEY"'"\n'
+  400  KEY=$(curl -ks -u admin:<THEHIVE_PASSWORD> -X POST \\n  "https://127.0.0.1/cortex/api/user/thehive/key/renew" \\n  -d '' | tr -d '"')\n\necho "KEY=$KEY"
+  401  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/analyzer?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  402  cd ~/resilient-soar/docker/testing\nsed -n '70,135p' scripts/test_init_cortex.sh
+  403  grep -nE 'auth\.method|auth.method.basic' cortex/config/application.conf
+  404  cd ~/resilient-soar/docker/testing\ngrep -nE 'CORTEX_URL=' scripts/test_init_cortex.sh
+  405  grep -nE 'auth\.method|auth\.method.basic' scripts/test_init_cortex.sh
+  406  curl -k -i -u admin:<THEHIVE_PASSWORD> \\n  "https://127.0.0.1/cortex/api/user/thehive/key/renew" \\n  -X POST -d ''
+  407  curl -sS -i \\n  -u admin:<THEHIVE_PASSWORD> \\n  -X POST \\n  "http://127.0.0.1:9001/cortex/api/user/thehive/key/renew" \\n  -d ''
+  408  cd ~/resilient-soar/docker/testing\n\ngrep -n -B3 -A5 'auth.method.basic = true' scripts/test_init_cortex.sh
+  409  grep -n -B3 -A8 'sed -i.*auth.method.basic' scripts/test_init_cortex.sh
+  410  cd ~/resilient-soar/docker/testing\n\nprintf '%s\n' 'auth.method.basic = true' >> cortex/config/application.conf\n\ndocker compose restart cortex
+  411  docker compose ps cortex
+  412  sudo docker compose ps cortex
+  413  curl -sS -u admin:<THEHIVE_PASSWORD> \\n  -X POST \\n  "http://127.0.0.1:9001/cortex/api/user/thehive/key/renew" \\n  -d ''
+  414  cd ~/resilient-soar/docker/testing\n\ngrep -nE 'admin|<PASSWORD>|password|key/renew' scripts/test_init_cortex.sh | head -40
+  415  sed -n '1,75p' scripts/test_init_cortex.sh'
+  416  sed -n '1,75p' scripts/test_init_cortex.sh
+  417  sudo docker logs --since 2m cortex 2>&1 | tail -80
+  418  history | grep -Ei 'cortex|key/renew|api/user|resilient01|<PASSWORD>' | tail -50
+  419  cd ~/resilient-soar/docker/testing\n\nexport CORTEX_API_KEY="<CORTEX_API_KEY>"  # (redacted) history | grep -E 'export CORTEX_API_KEY=' | tail -1 |\n  sed -E 's/.*export CORTEX_API_KEY="([^"]+)".*/\1/'\n)"
+  421  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/analyzer?range=all" \\n  -H "Authorization: Bearer <REDACTED>" |\n  grep -o '"name":"TestAnalyzer_1_0"'
+  422  curl -sS -w "\nHTTP %{http_code}\n" \\n  -X PUT \\n  "http://127.0.0.1:9000/thehive/api/v1/admin/config/cortex" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: admin" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  --data-binary @- <<EOF\n{\n  "statusCheckInterval": "1 minute",\n  "refreshDelay": "5 seconds",\n  "maxRetryOnError": 3,\n  "jobTimeout": "3 hours",\n  "servers": [\n    {\n      "name": "Cortex",\n      "url": "http://cortex:9001/cortex",\n      "includedTheHiveOrganisations": ["*"],\n      "excludedTheHiveOrganisations": [],\n      "auth": {\n        "type": "bearer",\n        "key": "$CORTEX_API_KEY"\n      }\n    }\n  ]\n}\nEOF
+  423  sudo docker logs --since 1m thehive 2>&1 | grep -iE 'List Cortex analyzers|ApplicationError|cortex.servers config was updated'
+  424  curl -sS -w "\nHTTP %{http_code}\n" \\n  -X PUT \\n  "http://127.0.0.1:9000/thehive/api/v1/admin/config/cortex" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: admin" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  --data-binary @- <<EOF\n{\n  "statusCheckInterval": "1 minute",\n  "refreshDelay": "5 seconds",\n  "maxRetryOnError": 3,\n  "jobTimeout": "3 hours",\n  "servers": [\n    {\n      "name": "Cortex",\n      "url": "http://cortex:9001/cortex",\n      "includedTheHiveOrganisations": ["*"],\n      "excludedTheHiveOrganisations": [],\n      "auth": {\n        "type": "bearer",\n        "key": "$CORTEX_API_KEY"\n      }\n    }\n  ]\n}\nEOF
+  425  sudo docker logs --since 1m thehive 2>&1 | grep -iE 'List Cortex analyzers|ApplicationError|cortex.servers config was updated'
+  426  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient-SOC" \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/analyzer?range=all"
+  427  curl -sS -i \\n  -u "soc01@resilient.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient-SOC" \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/analyzer?range=all"
+  428  cd ~/resilient-soar/docker/testing\ngrep -RniE 'soc01|resilient-soc|resilient.local' scripts .env docker-compose.yml \\n  --exclude-dir=logs --exclude-dir=data --exclude='*.backup*' | head -80
+  429  sudo docker logs thehive --since 2m 2>&1 | grep -iE 'connector/cortex/analyzer|List Cortex|ApplicationError|401|404'
+  430  sudo docker logs cortex --since 2m 2>&1 | grep -iE 'analyzer|401|403|404|Authentication'
+  431  sudo docker logs thehive --since 30s 2>&1 | grep -iE 'cortex|analyzer|job|8\.8\.8\.8'
+  432  sudo docker logs cortex --since 30s 2>&1 | grep -iE 'analyzer|job|TestAnalyzer|8\.8\.8\.8'
+  433  cd ~/resilient-soar/docker/testing\n\ngrep -nEi 'admin@thehive|soc01|password|secret' scripts/test_init_thehive.sh | head -80
+  434  grep -nEi 'create.*user|/api/v1/user|admin@thehive' scripts/*.sh | head -100
+  435  curl -sS -i \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  "http://127.0.0.1:9000/thehive/api/v1/user/current"
+  436  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  "http://127.0.0.1:9000/thehive/api/v1/admin/config/cortex"
+  437  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/analyzer?range=all"
+  438  sudo docker logs thehive --since 10s 2>&1 | grep -iE 'cortex|analyzer|ApplicationError|404|401'
+  439  sudo docker logs --since 30s cortex 2>&1 | grep -iE 'TestAnalyzer|job|8\.8\.8\.8'
+  440  sudo docker logs --since 30s thehive 2>&1 | grep -iE 'TestAnalyzer|analyzer|job|cortex'
+  441  sudo docker logs --since 2m cortex 2>&1 | grep -iE 'TestAnalyzer|analyzer|job|Authentication|error'
+  442  sudo docker logs --since 2m thehive 2>&1 | grep -iE 'TestAnalyzer|analyzer|job|cortex|error'
+  443  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/analyzer?range=all"
+  444  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient-SOC" \\n  "http://127.0.0.1:9000/thehive/api/v1/query" \\n  -H "Content-Type: application/json" \\n  --data '{"query":[{"_name":"listObservable"}],"range":"all","sort":[{"_field":"_createdAt","_order":"desc"}]}'
+  445  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  -H "Content-Type: application/json" \\n  "http://127.0.0.1:9000/thehive/api/v1/query" \\n  --data '{"query":[{"_name":"listObservable"}],"range":"all","sort":[{"_field":"_createdAt","_order":"desc"}]}'
+  446  sudo docker logs thehive 2>&1 | grep -iE 'soc01|Resilient-SOC' | tail -50
+  447  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  "http://127.0.0.1:9000/thehive/api/v1/organisation"
+  448  sudo docker logs thehive 2>&1 | grep -F 'Accepted password for soc01@resilient.local' | tail -5
+  449  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/query?name=get-organisation-Resilient-SOC" \\n  --data '{}'
+  450  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/query?name=get-organisation-Resilient-SOC" \\n  --data '[]'
+  451  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/query" \\n  --data '[\n    {\n      "_name": "listObservable",\n      "_field": "value",\n      "_value": "8.8.8.8"\n    }\n  ]'
+  452  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/query" \\n  --data '[\n    {\n      "_name": "listObservable"\n    }\n  ]'
+  453  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/observable/_search" \\n  --data '{"query":{},"range":"all"}'
+  454  curl -sS -X POST \\n  "http://127.0.0.1:9001/cortex/api/analyzer/576c04e3ea205d8e3179d8b7453b07f1/run?force=1" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  --data '{\n    "data": "8.8.8.8",\n    "dataType": "ip",\n    "tlp": 0,\n    "message": "SOAR test from TheHive/Cortex lab"\n  }'
+  455  sudo docker logs --since 30s cortex 2>&1 | grep -iE 'TestAnalyzer|job|8\.8\.8\.8|error'
+  456  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  "http://127.0.0.1:9000/thehive/api/v1/case"
+  457  cd ~/resilient-soar/docker/testing\n\ngrep -RniE '(/api/.*case|/api/.*observable|create.*case|create.*observable)' scripts/*.sh | head -100
+  458  grep -RniE 'SOAR Test Case|8\.8\.8\.8' scripts .env \\n  --exclude-dir=data --exclude-dir=logs --exclude='*.backup*' | head -50
+  459  sed -n '306,335p' scripts/test_init_thehive.sh
+  460  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  "http://127.0.0.1:9000/thehive/api/organisation"
+  461  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  "http://127.0.0.1:9000/thehive/api/v1/case"
+  462  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  "http://127.0.0.1:9000/thehive/api/v1/case/SOAR%20Test%20Case"
+  463  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  "http://127.0.0.1:9000/thehive/api/v1/user/current"
+  464  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  "http://127.0.0.1:9000/thehive/api/organisation"
+  465  curl -sS -i \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: admin" \\n  -X PUT \\n  "http://127.0.0.1:9000/thehive/api/v1/user/~4160/organisations" \\n  --data '[\n    {\n      "organisationId": "~81932352",\n      "profile": "admin"\n    }\n  ]'
+  466  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  "http://127.0.0.1:9000/thehive/api/v1/case/SOAR%20Test%20Case"
+  467  curl -sS -i \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: admin" \\n  -X PUT \\n  "http://127.0.0.1:9000/thehive/api/v1/user/~4160/organisations" \\n  --data '{\n    "organisationId": "~81932352",\n    "profile": "admin"\n  }'
+  468  curl -sS -i \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: admin" \\n  -X PUT \\n  "http://127.0.0.1:9000/thehive/api/v1/user/~4160/organisations" \\n  --data '{\n    "organisations": [\n      {\n        "organisationId": "~81932352",\n        "profile": "admin"\n      }\n    ]\n  }'
+  469  curl -sS -i \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: admin" \\n  -X PUT \\n  "http://127.0.0.1:9000/thehive/api/v1/user/~4160/organisations" \\n  --data '{\n    "organisations": [\n      {\n        "organisationId": "~81932352",\n        "organisation": "Resilient",\n        "profile": "admin"\n      }\n    ]\n  }'
+  470  curl -sS -i \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: admin" \\n  -X PUT \\n  "http://127.0.0.1:9000/thehive/api/v1/user/~4160/organisations" \\n  --data '{\n    "organisations": [\n      {\n        "organisationId": "~8368",\n        "organisation": "admin",\n        "profile": "admin"\n      },\n      {\n        "organisationId": "~81932352",\n        "organisation": "Resilient",\n        "profile": "admin"\n      }\n    ]\n  }'
+  471  curl -sS -i \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  "http://127.0.0.1:9000/thehive/api/v1/case/SOAR%20Test%20Case"
+  472  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/query" \\n  --data '[{"_name":"listCase"}]'
+  473  sudo docker logs --since 30s cortex 2>&1 | grep -iE 'Job|TestAnalyzer|Success|Failed'
+  474  sudo docker logs --since 30s thehive 2>&1 | grep -iE 'cortex|analyzer|job|error'
+  475  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/query" \\n  --data '{\n    "query": [\n      {\n        "_name": "listCase"\n      }\n    ]\n  }'
+  476  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  "http://127.0.0.1:9000/thehive/api/v1/case/~8272/observable"
+  477  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/query" \\n  --data '{\n    "query": [\n      {\n        "_name": "listObservable",\n        "caseId": "~8272"\n      }\n    ]\n  }'
+  478  curl -sS -i \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/job" \\n  --data '{\n    "cortexId": "Cortex",\n    "analyzerId": "576c04e3ea205d8e3179d8b7453b07f1",\n    "artifactId": "~8376"\n  }'
+  479  sudo docker logs --since 30s cortex 2>&1 | grep -iE 'Ugne|TestAnalyzer|job|Success|Failed|8\.8\.8\.8'
+  480  sudo docker logs --since 30s thehive 2>&1 | grep -iE 'cortex|analyzer|job|error'
+  481  grep -RniE 'manageAnalyse|permissions.*manageAnalyse|profile.*manageAnalyse' scripts . \\n  --exclude-dir=data --exclude-dir=logs --exclude='*.backup*' | head -100
+  482  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  "http://127.0.0.1:9000/thehive/api/v1/profile"
+  483  curl -sS \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" \\n  "http://127.0.0.1:9000/thehive/api/v1/query" \\n  -H "Content-Type: application/json" \\n  --data '{\n    "query": [\n      {\n        "_name": "listProfile"\n      }\n    ]\n  }'
+  484  curl -sS -i \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: admin" \\n  -X PUT \\n  "http://127.0.0.1:9000/thehive/api/v1/user/~4160/organisations" \\n  --data '{\n    "organisations": [\n      {\n        "organisationId": "~8368",\n        "organisation": "admin",\n        "profile": "admin"\n      },\n      {\n        "organisationId": "~81932352",\n        "organisation": "Resilient",\n        "profile": "analyst"\n      }\n    ]\n  }'
+  485  curl -sS -i \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/job" \\n  --data '{\n    "cortexId": "Cortex",\n    "analyzerId": "576c04e3ea205d8e3179d8b7453b07f1",\n    "artifactId": "~8376"\n  }'
+  486  sudo docker logs --since 1m cortex 2>&1 | grep -iE 'TestAnalyzer|12368|job|Success|Failed|8\.8\.8\.8'
+  487  sudo docker logs --since 1m thehive 2>&1 | grep -iE '12368|cortex|analyzer|Success|Failed|error'
+  488  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>" | jq -r '.[] | [.id,.name,.version,.dataTypeList] | @tsv'
+  489  cd ~/resilient-soar/docker/testing\n\ncurl -sS \\n  -H "Authorization: Bearer <REDACTED>" \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all"
+  490  find cortex/neurons/responders -maxdepth 2 -type f 2>/dev/null | head -50
+  491  find cortex/neurons -maxdepth 3 -type f | grep -i responder | head -50
+  492  sudo docker logs --since 10m cortex 2>&1 | grep -iE 'responder|catalog|download|error|exception' | tail -100
+  493  sudo docker exec cortex sh -c 'curl -fsSL https://download.thehive-project.org/responders.json | head -c 500'
+  494  sudo docker exec cortex sh -c 'curl -fsSL https://download.thehive-project.org/responders.json | wc -c'
+  495  sudo docker logs --since 10m cortex 2>&1 | grep -iE 'responders.json|download.thehive-project|responders|WorkerSrv' | tail -50
+  496  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/organization" \\n  -H "Authorization: Bearer <REDACTED>"
+  497  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/user" \\n  -H "Authorization: Bearer <REDACTED>"
+  498  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/user/current" \\n  -H "Authorization: Bearer <REDACTED>"
+  499  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/analyzer?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  500  cd ~/resilient-soar/docker/testing\n\ngrep -nEi 'activate_responder|responder.*activate|api/responder|/responder/' \\n  scripts/test_init_cortex.sh scripts/*.sh | head -100
+  501  grep -nEi 'activate_analyzer|api/analyzer' scripts/test_init_cortex.sh
+  502  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  503  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responderDefinition?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  504  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder/definition?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  505  sudo docker exec cortex sh -c \\n'curl -fsSL https://download.thehive-project.org/responders.json | jq -r ".[] | [.name,.version,.dataTypeList[]?] | @tsv" | head -80'
+  506  sudo docker exec cortex sh -c \\n'curl -fsSL https://download.thehive-project.org/responders.json' > /tmp/responders.json\n\njq -r '.[] | [.name,.version,((.dataTypeList // [])|join(","))] | @tsv' /tmp/responders.json | head -80
+  507  cd ~/resilient-soar/docker/testing\nsed -n '127,164p' scripts/test_init_cortex.sh
+  508  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  510  curl -sS -i \\n  "http://127.0.0.1:9001/cortex/api/organization/Resilient-SOC/responder/Mailer_1_0" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  --data '{\n    "name": "Mailer_1_0"\n  }'
+  511  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  512  curl -sS -i \\n  -u "resilient01:$(printf '%s' 'YOUR_CORTEX_PASSWORD')" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9001/cortex/api/organization/responder/Mailer" \\n  --data '{\n    "name": "Mailer"\n  }'
+  513  curl -sS -i \\n  -u "thehive:<THEHIVE_PASSWORD>" \\n  "http://127.0.0.1:9001/cortex/api/user/current"
+  514  curl -sS -i \\n  -u "thehive:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9001/cortex/api/organization/responder/Mailer" \\n  --data '{\n    "name": "Mailer"\n  }'
+  515  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  516  cd ~/resilient-soar/docker/testing\n\ngrep -RniE 'resilient01|password.*resilient01|resilient01.*password|"login".*resilient01' . \\n  --exclude-dir=data \\n  --exclude-dir=logs \\n  --exclude='*.backup*' | head -100
+  517  history | grep -Ei 'resilient01|password|api/user' | tail -100
+  518  cd ~/resilient-soar/docker/testing\n\ngrep -RniE 'resilient01|password.*resilient01|resilient01.*password|"login".*resilient01' . \\n  --exclude-dir=data \\n  --exclude-dir=logs \\n  --exclude='*.backup*' | head -100
+  519  history | grep -Ei 'resilient01|password|api/user' | tail -100
+  520  cd ~/resilient-soar/docker/testing\n\ngrep -nEi 'admin|thehive|password|key/renew|organization|organisation' \\n  scripts/test_init_cortex.sh | head -100
+  521  sed -n '1,240p' scripts/test_init_cortex.sh
+  522  curl -sS -i \\n  -u "thehive:<THEHIVE_PASSWORD>" \\n  "http://127.0.0.1:9001/cortex/api/user/thehive"
+  523  curl -sS -i \\n  -u "thehive:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  "http://127.0.0.1:9001/cortex/api/organization/responder/Mailer_1_0" \\n  --data '{\n    "name": "Mailer_1_0"\n  }'
+  524  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  525  grep -n "auth.method.basic" ./cortex/config/application.conf
+  526  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/user?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  527  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/organization?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  528  curl -sS -i \\n  -u "admin:<THEHIVE_PASSWORD>" \\n  "http://127.0.0.1:9001/cortex/api/user/current"
+  529  cd ~/resilient-soar/docker/testing\n\ngrep -nEi 'admin|thehive|password|apikey|api.?key|organization|organization|responder|analyzer' \\n  scripts/test_init_cortex.sh | head -100
+  530  sed -n '1,240p' scripts/test_init_cortex.sh
+  531  curl -sS -u "admin:<THEHIVE_PASSWORD>" \\n  "http://127.0.0.1:9001/cortex/api/organization?range=all"
+  532  curl -sS -u "admin:<THEHIVE_PASSWORD>" \\n  "http://127.0.0.1:9001/cortex/api/user?range=all"
+  533  docker compose ps cortex
+  534  docker compose logs cortex --tail=100
+  535  docker exec cortex sh -c 'cat /etc/cortex/application.conf 2>/dev/null || cat /opt/cortex/application.conf 2>/dev/null'
+  536  sudo docker compose ps cortex
+  537  sudo docker compose logs cortex --tail=100
+  538  sudo docker exec cortex sh -c 'cat /etc/cortex/application.conf 2>/dev/null || cat /opt/cortex/application.conf 2>/dev/null'
+  539  cd ~/resilient-soar/docker/testing
+  540  sudo docker exec cortex sh -c 'cat /etc/cortex/secret.conf'
+  541  sudo docker exec cortex sh -c 'cat /etc/cortex/index.conf'
+  542  sudo docker compose config | grep -A40 -B5 '^  cortex:'
+  543  sudo docker exec cortex sh -c '\ncurl -sS -u "elastic:<ELASTIC_PASSWORD>" \\n  "http://elasticsearch:9200/cortex/_search?size=50" \\n  -H "Content-Type: application/json" \\n  -d "{\"query\":{\"match_all\":{}}}"\n' | python3 -m json.tool | head -300
+  544  sudo docker exec elasticsearch sh -c \\n'curl -sS -u "elastic:<ELASTIC_PASSWORD>" \\n"http://localhost:9200/_cat/indices?v"'
+  545  sudo docker exec cortex sh -c \\n'curl -sS -u "elastic:<ELASTIC_PASSWORD>" \\n"http://elasticsearch:9200/_cat/indices?v"'
+  546  sudo docker exec cortex sh -c '\ncurl -sS \\n  -u "elastic:<ELASTIC_PASSWORD>" \\n  "http://elasticsearch:9200/cortex_6/_search?size=50" \\n  -H "Content-Type: application/json" \\n  -d "{\"query\":{\"exists\":{\"field\":\"login\"}}}"\n' | python3 -m json.tool
+  547  sudo docker exec cortex sh -c '\ncurl -sS \\n  -u "elastic:<ELASTIC_PASSWORD>" \\n  "http://elasticsearch:9200/cortex_6/_search?size=3" \\n  -H "Content-Type: application/json" \\n  -d "{\"query\":{\"match_all\":{}}}"\n' | python3 -m json.tool
+  548  sudo docker exec cortex sh -c '\ncurl -sS \\n  -u "elastic:<ELASTIC_PASSWORD>" \\n  "http://elasticsearch:9200/cortex_6/_search?size=100" \\n  -H "Content-Type: application/json" \\n  -d "{\"query\":{\"query_string\":{\"query\":\"resilient01\"}}}"\n' | python3 -m json.tool | grep -E '"(login|name|organization|roles|createdBy|type)"'
+  549  sudo docker exec cortex sh -c '\ncurl -sS \\n  -u "elastic:<ELASTIC_PASSWORD>" \\n  "http://elasticsearch:9200/cortex_6/_search?size=100" \\n  -H "Content-Type: application/json" \\n  -d "{\"query\":{\"query_string\":{\"query\":\"resilient01\"}}}"\n' | python3 -m json.tool | sed -n '/"roles"/,+15p'
+  550  sudo docker exec cortex sh -c '\ncurl -sS -u "resilient01:YOUR_PASSWORD" \\n  -X POST \\n  "http://localhost:9001/cortex/api/user/resilient01/key/renew" \\n  -d ""\n'
+  552  curl -sS -i \\n  "http://127.0.0.1:9001/cortex/api/user/current" \\n  -H "Authorization: Bearer <REDACTED>"
+  553  curl -sS -i \\n  "http://127.0.0.1:9001/cortex/api/organization/responder/Mailer" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  --data '{"name":"Mailer"}'
+  554  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  555  sudo docker exec cortex sh -c '\nfind /opt/cortexneurons/responders -maxdepth 2 -type f 2>/dev/null | sort\n'
+  556  sudo docker exec cortex sh -c '\nfind /opt/cortexneurons/responders -iname "*mailer*" -print\n'
+  557  sudo docker exec cortex sh -c '\nls -lah /opt/cortexneurons/\necho "---- responders ----"\nls -lah /opt/cortexneurons/responders 2>&1\n'
+  558  sudo docker exec cortex sh -c '\ncurl -k -sS https://download.thehive-project.org/responders.json | grep -o "\"name\"[[:space:]]*:[[:space:]]*\"[^\"]*Mailer[^\"]*\"" | head -20\n'
+  559  sudo docker exec cortex sh -c '\ncurl -k -sS -I https://download.thehive-project.org/responders.json | head\n'
+  560  cd ~/resilient-soar/docker/testing\n\nsudo docker exec cortex sh -c '\ncurl -k -sS https://download.thehive-project.org/responders.json \\n  -o /tmp/responders.json\npython3 - <<'"'"'PY'\nimport json\np="/tmp/responders.json"\nd=json.load(open(p))\nitems=d if isinstance(d,list) else d.get("responders", [])\nfor x in items:\n    if x.get("name")=="Mailer":\n        print(json.dumps(x, indent=2))\nPY\n'
+  561  sudo docker exec cortex sh -c '\ncurl -k -sS https://download.thehive-project.org/responders.json -o /tmp/responders.json\ngrep -n -A20 -B5 "\"name\": \"Mailer\"" /tmp/responders.json | head -40\n'
+  562  sudo mkdir -p cortex/cortexneurons/responders/Mailer\n\nsudo curl -fsSL \\n  https://raw.githubusercontent.com/TheHive-Project/Cortex-Analyzers/master/responders/Mailer/Mailer.json \\n  -o cortex/cortexneurons/responders/Mailer/Mailer.json\n\nsudo curl -fsSL \\n  https://raw.githubusercontent.com/TheHive-Project/Cortex-Analyzers/master/responders/Mailer/mailer.py \\n  -o cortex/cortexneurons/responders/Mailer/mailer.py\n\nsudo chmod +x cortex/cortexneurons/responders/Mailer/mailer.py\n\nsudo chown -R 1000:1000 cortex/cortexneurons/responders/Mailer
+  563  sudo docker compose restart cortex
+  564  sudo docker compose ps cortex
+  565  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  566  sudo docker compose ps cortex
+  567  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  568  sudo docker compose logs cortex --tail=80
+  569  cd ~/resilient-soar/docker/testing\n\nsudo docker compose config | grep -A25 -B5 -E 'cortexneurons|responders|volumes:'
+  570  sudo docker compose restart cortex
+  571  sudo docker exec cortex sh -c 'find /opt/cortexneurons/responders -maxdepth 3 -type f | sort'
+  572  sudo docker inspect cortex --format '{{json .Mounts}}' | python3 -m json.tool
+  573  sudo docker inspect cortex --format '{{json .Config.Env}}' | python3 -m json.tool
+  574  cd ~/resilient-soar/docker/testing\n\nsudo mkdir -p cortex/neurons/responders/Mailer\n\nsudo cp -f cortex/cortexneurons/responders/Mailer/* \\n  cortex/neurons/responders/Mailer/\n\nsudo chown -R 1000:1000 cortex/neurons/responders/Mailer
+  575  sudo docker exec cortex sh -c \\n'find /opt/cortexneurons/responders/Mailer -maxdepth 2 -type f -ls'
+  576  sudo docker compose restart cortex
+  577  sudo docker compose ps cortex
+  578  sudo docker compose restart cortex
+  579  sudo docker compose ps cortex
+  580  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  581  cd ~/resilient-soar/docker/testing\n\nsudo ls -lah cortex/neurons/responders/\nsudo find cortex/neurons/responders -maxdepth 3 -type f -ls
+  582  sudo docker exec cortex sh -c \\n'find /opt/cortexneurons/responders -maxdepth 3 -type f -ls'
+  583  sudo docker compose logs cortex --since=5m | grep -Ei 'Mailer|responder|worker|error' | tail -120
+  584  curl -sS -i \\n  "http://127.0.0.1:9001/cortex/api/organization/responder/Mailer" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  --data '{"name":"Mailer"}'
+  585  curl -sS -i \\n  "http://127.0.0.1:9001/cortex/api/organization/responder/Mailer_1_0" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  --data '{"name":"Mailer_1_0"}'
+  586  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  587  curl -sS -i \\n  "http://127.0.0.1:9001/cortex/api/organization/responder/Mailer_1_0" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -X POST \\n  --data '{\n    "name": "Mailer_1_0",\n    "configuration": {\n      "from": "soc@resilient.local"\n    }\n  }'
+  588  curl -sS \\n  "http://127.0.0.1:9001/cortex/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>"
+  589  curl -sS \\n  "http://127.0.0.1:9000/api/v1/connector/cortex/responder/" \\n  -H "Authorization: Bearer <REDACTED>" | python3 -m json.tool
+  590  curl -sS -i \\n  "http://127.0.0.1:9000/api/v1/connector/cortex/analyzer" \\n  -H "Authorization: Bearer <REDACTED>"
+  591  curl -sS -i \\n  "http://127.0.0.1:9000/api/v1/connector/cortex/status" \\n  -H "Authorization: Bearer <REDACTED>"
+  592  sudo docker compose config | grep -A30 -B10 'thehive:' | grep -E -- '--no-config|--cortex|cortex'
+  593  sudo docker compose logs thehive --since=10m | grep -Ei 'cortex|connector|no-config|error' | tail -100
+  594  sudo docker exec thehive sh -c '\nenv | grep -Ei "CORTEX|THEHIVE.*CORTEX"\n'
+  595  cd ~/resilient-soar/docker/testing\n\nsudo grep -RniE 'cortex|connector|resilient01|9001|api.?key' thehive/config .
+  596  sudo find thehive/config -maxdepth 2 -type f -print
+  597  sudo sed -n '1,260p' thehive/config/application.conf
+  598  cd ~/resilient-soar/docker/testing\n\nsed -n '341,360p' scripts/test_init_thehive.sh
+  599  sed -n '360,385p' scripts/test_init_thehive.sh
+  600  sed -n '385,415p' scripts/test_init_thehive.sh
+  601  cd ~/resilient-soar/docker/testing\nsed -n '415,455p' scripts/test_init_thehive.sh
+  602  curl -sS -i \\n  -X PUT \\n  "http://127.0.0.1:9000/api/v1/admin/config/cortex" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: admin" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  --data-binary @- <<EOF\n{\n  "statusCheckInterval": "1 minute",\n  "refreshDelay": "5 seconds",\n  "maxRetryOnError": 3,\n  "jobTimeout": "3 hours",\n  "servers": [\n    {\n      "name": "Cortex",\n      "url": "http://cortex:9001/cortex",\n      "includedTheHiveOrganisations": ["*"],\n      "excludedTheHiveOrganisations": [],\n      "auth": {\n        "type": "bearer",\n        "key": "$RESILIENT_CORTEX_KEY"\n      }\n    }\n  ]\n}\nEOF
+  603  curl -sS -i \\n  "http://127.0.0.1:9000/api/v1/admin/config/cortex" \\n  -H "X-Organisation: admin" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>"
+  604  sudo docker compose ps thehive
+  605  sudo docker compose logs thehive --tail=80
+  606  curl -sS -i http://127.0.0.1:9000/thehive/api/status
+  607  ip -4 addr show | grep -E 'inet '
+  608  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/responder/" \\n  -H "Authorization: Bearer <REDACTED>"
+  609  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/analyzer" \\n  -H "Authorization: Bearer <REDACTED>"
+  610  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/responders/case" \\n  -H "Authorization: Bearer <REDACTED>"
+  611  curl -sS -i \\n  "http://127.0.0.1:9000/thehive/api/connector/cortex/responder/" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin"
+  612  curl -sS -i \\n  "http://127.0.0.1:9000/thehive/api/connector/cortex/analyzer" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin"
+  614  curl -sS -i \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/responders/case" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin"
+  615  curl -sS -i \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/responder/case/CASE_ID" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin"
+  616  cd ~/resilient-soar/docker/testing\n\ngrep -nEi 'admin@thehive\.local|create.*user|roles|manageAction' \\n  scripts/test_init_thehive.sh | head -120
+  617  sed -n '220,360p' scripts/test_init_thehive.sh
+  618  curl -sS -i \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/responders/case" \\n  -u "thehive@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient"
+  619  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/user?range=0-100" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" | python3 -m json.tool
+  620  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/user?range=0-100" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" | python3 -m json.tool
+  621  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/profile" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" | python3 -m json.tool
+  622  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/profile?range=0-100" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: admin" | python3 -m json.tool
+  623  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/user?range=0-100" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | python3 -m json.tool
+  624  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/user/soc01@resilient.local" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | python3 -m json.tool
+  625  cd ~/resilient-soar/docker/testing\nsed -n '66,95p' scripts/test_init_thehive.sh
+  626  curl -sS -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/user" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "login": "responder@resilient.local",\n    "name": "Responder Test",\n    "organisation": "Resilient",\n    "profile": "org-admin",\n    "password": "ResponderTest123!"\n  }' | python3 -m json.tool
+  627  curl -sS -i \\n  -X PATCH \\n  "http://127.0.0.1:9000/thehive/api/v1/user/~40984704" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -H "X-Organisation: Resilient" \\n  -d '{"profile":"org-admin"}'
+  628  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/user/soc01@resilient.local" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | python3 -m json.tool
+  629  curl -sS -i \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/responders/case" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient"
+  630  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/case?range=0-10" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | python3 -m json.tool
+  631  curl -sS -i \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "responderId": "a807f82713caad19683daf9a92dd7eb0",\n    "cortexId": "Cortex",\n    "objectType": "case",\n    "objectId": "~8272"\n  }'
+  632  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/action/~81965120" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | python3 -m json.tool
+  633  sudo docker compose logs cortex --since=2m | grep -Ei 'Mailer|81965120|smtp|error|exception' | tail -100
+  634  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action/case/~8272" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | python3 -m json.tool
+  635  sudo docker exec cortex sh -c 'head -5 /opt/cortexneurons/responders/Mailer/mailer.py'
+  636  sed -n '125,165p' docker-compose.yml
+  637  cd ~/resilient-soar/docker/testing
+  638  cat > cortex/Dockerfile <<'EOF'\nFROM thehiveproject/cortex:4.1.0\n\nUSER root\n\nRUN apt-get update \\n && apt-get install -y --no-install-recommends python3 python3-pip \\n && pip3 install --no-cache-dir cortexutils \\n && rm -rf /var/lib/apt/lists/*\n\nUSER 1000\nEOF
+  639  sed -i '/^  cortex:/,/^  [a-zA-Z_-]*:/ {\n  /image: "thehiveproject\/cortex:${cortex_image_version}"/c\\n    build:\\n      context: ./cortex\\n      dockerfile: Dockerfile\\n    image: resilient-cortex:4.1.0\n}' docker-compose.yml
+  640  sudo docker compose build cortex && sudo docker compose up -d cortex
+  641  cd ~/resilient-soar/docker/testing\n\nsudo sed -i 's/pip3 install --no-cache-dir cortexutils/pip3 install --break-system-packages --no-cache-dir cortexutils/' cortex/Dockerfile\n\nsudo docker compose build cortex && sudo docker compose up -d cortex
+  642  sudo docker exec cortex sh -c 'python3 --version && python3 -c "import cortexutils; print(cortexutils.__file__)"'
+  643  curl -sS -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -d '{"responderId":"a807f82713caad19683daf9a92dd7eb0","cortexId":"Cortex","objectType":"case","objectId":"~8272"}'
+  644  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action/case/~8272" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | python3 -m json.tool
+  645  sudo docker compose ps cortex
+  646  curl -sS -i \\n  "http://127.0.0.1:9001/cortex/api/status"
+  647  sudo docker exec cortex sh -c '\npython3 --version\npython3 -c "import cortexutils; print(\"cortexutils OK\")"\nfind /opt/cortexneurons/responders/Mailer -maxdepth 1 -type f -print\n'
+  648  sudo docker compose ps cortex
+  649  curl -sS -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -d '{"responderId":"a807f82713caad19683daf9a92dd7eb0","cortexId":"Cortex","objectType":"case","objectId":"~8272"}'
+  650  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action/case/~8272" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | python3 -m json.tool
+  651  curl -sS -i \\n  -X POST \\n  "http://127.0.0.1:9000/thehive/api/case/~8272/tag" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -d '{"tag":"soc01@resilient.local"}'
+  652  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/case/~8272" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | python3 -m json.tool | grep -A10 '"tags"'
+  653  curl -sS -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -d '{"responderId":"a807f82713caad19683daf9a92dd7eb0","cortexId":"Cortex","objectType":"case","objectId":"~8272"}'
+  654  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action/case/~8272" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | python3 -m json.tool
+  655  curl -sS -i \\n  -X PATCH \\n  "http://127.0.0.1:9000/thehive/api/v1/case/~8272" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -d '{"tags":["mail=soc01@resilient.local"]}'
+  656  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/case/~8272" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | \\n  python3 -m json.tool | grep -A5 '"tags"'
+  657  curl -sS -X POST \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -d '{"responderId":"a807f82713caad19683daf9a92dd7eb0","cortexId":"Cortex","objectType":"case","objectId":"~8272"}'
+  658  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action/case/~8272" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | \\n  python3 -m json.tool | grep -A3 -E '"status"|"errorMessage"'
+  659  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action/case/~8272" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | \\npython3 -c '\nimport sys,json\nfor x in json.load(sys.stdin):\n    if x.get("_id")=="~81973312":\n        print(x.get("report",""))\n'
+  660  docker compose exec cortex sh -c '\ngrep -RniE "smtp_host|smtp_port|smtp.*host|smtp.*port" \\n/opt/cortexneurons/responders/Mailer 2>/dev/null\n'
+  661  docker compose ps
+  662  sudo docker compose ps
+  663  sudo docker compose exec cortex sh -c '\ngrep -RniE "smtp_host|smtp_port|smtp.*host|smtp.*port" \\n/opt/cortexneurons/responders/Mailer 2>/dev/null\n'
+  664  sudo docker compose exec cortex sh -c '\nsed -n "1,180p" /opt/cortexneurons/responders/Mailer/mailer.py\n'
+  665  sudo docker compose exec cortex sh -c '\ncat /opt/cortexneurons/responders/Mailer/Mailer.json\n'
+  666  nano docker-compose.yml
+  667  ls -la | grep -E 'compose|docker-compose'
+  668  cp docker-compose.yml docker-compose.yml.before-mailhog
+  669  tail -n 30 docker-compose.yml
+  670  python3 - <<'PY'\nfrom pathlib import Path\n\np = Path("docker-compose.yml")\ns = p.read_text()\n\nservice = '''\n  mailhog:\n    image: mailhog/mailhog:latest\n    container_name: mailhog\n    restart: unless-stopped\n    ports:\n      - "1025:1025"\n      - "8025:8025"\n    networks:\n      - thehive-cortex-network\n\n'''\n\nif "\n  mailhog:\n" not in s:\n    s = s.replace("\nnetworks:\n", "\n" + service + "networks:\n")\n    p.write_text(s)\n    print("MailHog service added successfully")\nelse:\n    print("MailHog already exists")\nPY
+  671  sudo docker compose config > /dev/null && echo "Compose YAML OK"
+  672  sudo docker compose up -d mailhog
+  673  sudo docker compose ps
+  674  sudo docker compose exec cortex python3 -c '\nimport socket\ns = socket.create_connection(("mailhog", 1025), timeout=5)\nprint("SMTP CONNECTION SUCCESS")\ns.close()\n'
+  675  curl -sS \\n  "http://127.0.0.1:9001/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>" | \\npython3 -m json.tool | grep -A25 -B5 '"name": "Mailer"'
+  677  curl -sS \\n  "http://127.0.0.1:9001/api/responder?range=all" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" | \\npython3 -c '\nimport sys,json\ndata=json.load(sys.stdin)\nprint("TYPE:", type(data).__name__)\nprint(json.dumps(data, indent=2)[:5000])\n'
+  678  curl -sS \\n  "http://127.0.0.1:9001/api/status" \\n  -H "Authorization: Bearer <REDACTED>" | \\npython3 -m json.tool
+  679  curl -sS \\n  "http://127.0.0.1:9001/api/responder" \\n  -H "Authorization: Bearer <REDACTED>" | \\npython3 -m json.tool
+  680  sudo docker compose exec cortex sh -c '\ngrep -Rni --exclude="mailer.py" --exclude="Mailer.json" \\n"\"Mailer\"\|smtp_host\|smtp_port" \\n/opt/cortex /etc/cortex 2>/dev/null\n'
+  681  sudo docker compose exec cortex sh -c '\nfind /opt/cortex /etc/cortex -type f 2>/dev/null | head -50\n'
+  682  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/action/case/~8272" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | \\npython3 -c '\nimport sys,json\ndata=json.load(sys.stdin)\nfor x in data:\n    if x.get("_id")=="~81973312":\n        print(json.dumps(x, indent=2))\n'
+  683  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/responder" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | \\npython3 -m json.tool
+  684  curl -sS \\n  "http://127.0.0.1:9000/thehive/api/v1/connector/cortex/responder/" \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "X-Organisation: Resilient" | \\npython3 -m json.tool
+  685  sudo docker compose exec cortex sh -c '\ngrep -nEi "responder|api/" /opt/cortex/conf/routes | head -80\n'
+  686  sudo docker compose exec cortex sh -c '\ncurl -sS http://127.0.0.1:9001/api/responderconfig/Mailer\n'
+  687  sudo docker compose exec cortex sh -c '\ncurl -sS http://127.0.0.1:9001/api/responderconfig\n'
+  688  curl -sS \\n  "http://127.0.0.1:9001/api/responder/a807f82713caad19683daf9a92dd7eb0" \\n  -H "Authorization: Bearer <REDACTED>" | \\npython3 -m json.tool
+  689  sudo docker compose exec cortex sh -c '\nenv | grep -Ei "smtp|mailer|cortex"\n'
+  690  sudo docker compose exec cortex sh -c '\ngrep -RniE "smtp_host|smtp_port|Mailer" /opt/cortexneurons 2>/dev/null | head -100\n'
+  691  curl -i -sS \\n  "http://127.0.0.1:9001/api/health"
+  692  curl -i -sS \\n  "http://127.0.0.1:9001/api/status"
+  693  curl -i -sS \\n  "http://127.0.0.1:9001/"
+  694  curl -i -sS \\n  "http://127.0.0.1:9001/api"
+  695  sudo docker compose exec cortex sh -c '\ncat /opt/cortex/conf/application.conf 2>/dev/null || true\n'
+  696  sudo docker compose exec cortex sh -c '\nfind / -name "application.conf" -o -name "*.conf" 2>/dev/null | grep -E "cortex|application" | head -50\n'
+  697  sudo docker compose exec cortex sh -c '\nsed -n "1,240p" /etc/cortex/application.conf\n'
+  698  sudo docker compose exec cortex sh -c '\nsed -n "1,200p" /etc/cortex/reference.conf\n'
+  699  sudo docker compose exec cortex sh -c '\ngrep -RniE "responderConfig|responder.config|baseConfig|Mailer|smtp_host|smtp_port" \\n/etc/cortex /opt/cortex/conf /opt/cortexneurons 2>/dev/null | head -200\n'
+  700  sudo docker compose exec cortex sh -c '\ncat /opt/cortexneurons/responders/Mailer/Mailer.json\n'
+  701  cd ~/resilient-soar/docker/testing
+  703  cp -r docker-compose.yml ~/tSOC-OperationAutopilot_Fatima/ 2>/dev/null || true\ncp -r cortex ~/tSOC-OperationAutopilot_Fatima/ 2>/dev/null || true
+  704  sudo docker compose ps > ~/tSOC-OperationAutopilot_Fatima/docker-compose-ps.txt
+  705  sudo docker compose config > ~/tSOC-OperationAutopilot_Fatima/docker-compose-config.txt
+  706  sudo docker compose logs --no-color cortex > ~/tSOC-OperationAutopilot_Fatima/cortex.log
+  707  sudo docker compose logs --no-color thehive > ~/tSOC-OperationAutopilot_Fatima/thehive.log
+  708  sudo docker compose logs --no-color mailhog > ~/tSOC-OperationAutopilot_Fatima/mailhog.log
+  709  sudo docker compose exec cortex cat /etc/cortex/application.conf \\n> ~/tSOC-OperationAutopilot_Fatima/cortex-application.conf
+  710  sudo docker compose exec cortex cat /opt/cortexneurons/responders/Mailer/Mailer.json \\n> ~/tSOC-OperationAutopilot_Fatima/Mailer.json
+  711  sudo docker compose exec cortex cat /opt/cortex/conf/routes \\n> ~/tSOC-OperationAutopilot_Fatima/cortex-routes.txt
+  712  grep -RniE 'API.?KEY|PASSWORD|SECRET|TOKEN|Bearer' \\n~/tSOC-OperationAutopilot_Fatima \\n--exclude='*.log' 2>/dev/null
+  717  sudo docker compose ps > evidence/docker-status.txt
+  718  curl -i -sS \\n"http://127.0.0.1:9001/cortex/api/health" \\n> evidence/cortex-health.txt
+  719  curl -i -sS \\n"http://127.0.0.1:9001/cortex/api/status" \\n> evidence/cortex-status.txt
+  720  curl -sS \\n"http://127.0.0.1:8025/api/v2/messages" \\n> evidence/mailhog-messages.json
+  721  sudo docker compose exec cortex cat /opt/cortexneurons/responders/Mailer/Mailer.json \\n> evidence/Mailer.json
+  722  sudo docker compose exec cortex cat /opt/cortex/conf/routes \\n> evidence/cortex-routes.txt
+  723  rm -f ~/tSOC-OperationAutopilot_Fatima/cortex/config/secret.conf\nrm -f ~/tSOC-OperationAutopilot_Fatima/cortex/config/index.conf\nrm -rf ~/tSOC-OperationAutopilot_Fatima/cortex/config.backup-*
+  724  rm -f ~/tSOC-OperationAutopilot_Fatima/docker-compose-config.txt
+  725  cp ~/resilient-soar/docker/testing/docker-compose.yml \\n~/tSOC-OperationAutopilot_Fatima/
+  726  cd ~/tSOC-OperationAutopilot_Fatima\n\ncat > .env.example <<'EOF'\n# Copy this file to .env and fill the values locally.\nelasticsearch_password=CHANGE_ME\ncortex_image_version=CHANGE_ME\nthehive_image_version=CHANGE_ME\ncassandra_image_version=CHANGE_ME\nnginx_image_version=CHANGE_ME\nnginx_server_name=CHANGE_ME\nnginx_ssl_trusted_certificate=\ncortex_docker_job_directory=CHANGE_ME\nUID=1000\nGID=1000\nEOF
+  727  cd ~/resilient-soar/docker/testing\n\nsudo docker compose exec cortex cat \\n/opt/cortexneurons/responders/Mailer/mailer.py \\n> ~/tSOC-OperationAutopilot_Fatima/evidence/mailer.py
+  728  cd ~/resilient-soar/docker/testing\n\nsudo docker compose ps -a \\n> ~/tSOC-OperationAutopilot_Fatima/evidence/docker-status-final.txt\n\nsudo docker compose logs --no-color cortex \\n> ~/tSOC-OperationAutopilot_Fatima/evidence/cortex-final.log\n\nsudo docker compose logs --no-color thehive \\n> ~/tSOC-OperationAutopilot_Fatima/evidence/thehive-final.log\n\nsudo docker compose logs --no-color mailhog \\n> ~/tSOC-OperationAutopilot_Fatima/evidence/mailhog-final.log
+  730  cd ~/tSOC-OperationAutopilot_Fatima\n\ngrep -RniE \\n'password[[:space:]]*=[[:space:]]*"[^"]+"|secret\.key[[:space:]]*=|Bearer[[:space:]]+[A-Za-z0-9._-]+|API.?KEY[[:space:]]*=' \\n. \\n--exclude='*.log' \\n--exclude-dir='.git'
+  734  tar -xOzf ~/tSOC-OperationAutopilot_Fatima.tar.gz 2>/dev/null | \\ngrep -iE 'secret\.key|elasticsearch_password|Bearer|api.?key' | head -50
+  735  rm -f ~/tSOC-OperationAutopilot_Fatima/cortex/cortex-jobs/test_write
+  736  cd ~/tSOC-OperationAutopilot_Fatima\n\nmkdir -p evidence/shuffle
+  737  tar -tzf ~/tSOC-OperationAutopilot_Fatima.tar.gz | \\ngrep -Ei 'secret\.conf$|index\.conf$|\.env$|credentials|password|token|apikey|api.key'
+  738  sudo docker compose exec cortex ...
+  740  tar -tzf ~/tSOC-OperationAutopilot_Fatima.tar.gz | \\ngrep -E '(^|/)\.env$|(^|/)secret\.conf$|(^|/)index\.conf$'
+  742  cd ~\n\ntar -tzf ~/tSOC-OperationAutopilot_Fatima.tar.gz | \\ngrep -E '(^|/)\.env$|(^|/)secret\.conf$|(^|/)index\.conf$'
+  747  cd ~/resilient-soar/docker/testing
+  748  sudo docker compose ps thehive
+  749  sudo docker compose up -d thehive
+  750  sudo docker compose ps thehive
+  751  sudo docker compose ps
+  752  sudo docker compose logs cortex --since 5m | grep -A15 -B8 -Ei 'Worker cannot be run|worker|TestAnalyzer|job|error'
+  753  sudo docker compose logs cortex --since 10m | grep -A20 -B10 -Ei 'Worker cannot be run|DockerClient|TestAnalyzer|LD1|Kz1|error'
+  754  grep -nEi 'cortex|organization|organisation' thehive/config/application.conf
+  755  sudo docker exec thehive sh -c 'curl -s http://cortex:9001/cortex/api/status'
+  756  sudo docker exec thehive sh -c 'grep -RniE "cortex|organisation|organization" /etc/thehive 2>/dev/null | head -100'
+  757  sudo docker inspect cortex --format '{{range .Config.Env}}{{println .}}{{end}}' | grep -Ei 'JOB|DOCKER|CORTEX'
+  758  sudo docker exec cortex sh -c 'grep -nEi "job_directory|docker_job_directory|jobRunner|docker" /etc/cortex/application.conf 2>/dev/null'
+  759  sudo docker exec cortex sh -c 'curl -s -H "Authorization: Bearer <REDACTED>" http://localhost:9001/cortex/api/organization'
+  760  sudo docker exec cortex sh -c 'grep -nEi "job_directory|docker_job_directory|jobRunner|docker" /etc/cortex/application.conf 2>/dev/null'
+  761  sudo docker exec cortex sh -c 'curl -s http://localhost:9001/cortex/api/organization'
+  762  curl -s http://localhost:9001/cortex/api/organization
+  764  sudo docker exec cortex sh -c "curl -s -H 'Authorization: Bearer <REDACTED>' http://localhost:9001/cortex/api/organization"
+  765  sudo docker compose logs cortex --since 1h | grep -Ei 'TestAnalyzer|Worker cannot be run|DockerClient|Success|Failure' | tail -50
+  766  sudo docker inspect cortex --format '{{range .Mounts}}{{println .Source " -> " .Destination}}{{end}}'
+  767  sudo docker exec cortex sh -c 'docker version'
+  768  sudo docker exec cortex sh -c 'ls -l /var/run/docker.sock && id'
+  769  sed -n '40,83p' docker-compose.yml
+  770  grep -n "^[[:space:]]*cortex:" docker-compose.yml
+  771  sed -n '130,210p' docker-compose.yml
+  772  nano docker-compose.yml
+  773  sudo docker compose up -d --force-recreate cortex
+  774  sudo docker exec cortex id
+  775  sudo docker exec cortex sh -c 'docker ps --format "{{.Names}}"'
+  776  sudo docker exec cortex sh -c 'cat /opt/cortexneurons/responders/Mailer/Mailer.json'
+  777  sudo docker exec cortex sh -c 'grep -nE "smtp_host|smtp_port|localhost|MailHog" /opt/cortexneurons/responders/Mailer/mailer.py'
+  778  sudo docker exec cortex sh -c 'getent hosts mailhog && nc -zv mailhog 1025'
+  779  sudo docker exec cortex sh -c 'curl -v telnet://mailhog:1025'
+  780  sudo docker compose exec cortex sh -c 'grep -RniE "smtp_host|smtp_port|smtpHost|smtpPort|Mailer" /opt/cortexneurons /etc/cortex 2>/dev/null | head -100'
+  781  sudo docker compose logs cortex --tail 30
+  782  sudo docker exec cortex sh -c 'grep -RniE "smtp_host|smtp_port|Mailer" /tmp/cortex-jobs 2>/dev/null | tail -50'
+  783  sudo docker exec cortex sh -c 'curl -s -H "Authorization: Bearer <REDACTED>" http://localhost:9001/cortex/api/responder | grep -o "\"id\"[^,]*.*Mailer[^,]*"'
+  785  curl -s -H "Authorization: Bearer <REDACTED>" \\nhttp://127.0.0.1:9001/cortex/api/responder
+  787  curl -s -H "Authorization: Bearer <REDACTED>" \\nhttp://127.0.0.1:9001/cortex/api/responder
+  788  curl -s -H "Authorization: <CORTEX_API_KEY>\n" \\nhttp://127.0.0.1:9001/cortex/api/responder
+  789  curl -s -H "Authorization: Bearer <REDACTED>" \\nhttp://127.0.0.1:9001/cortex/api/responder
+  791  curl -s -H "Authorization: Bearer <REDACTED>" \\nhttp://127.0.0.1:9001/cortex/api/user/current
+  792  curl -s -H "Authorization: Bearer <REDACTED>" \\nhttp://127.0.0.1:9001/cortex/api/responder
+  793  curl -s -H "Authorization: Bearer <REDACTED>" \\nhttp://127.0.0.1:9001/cortex/api/responder/a807f82713caad19683daf9a92dd7eb0
+  794  curl -s -X PATCH \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"configuration":{"from":"soc@resilient.local","smtp_host":"mailhog","smtp_port":1025,"smtp_user":"user","smtp_pwd":"pwd"}}' \\n  http://127.0.0.1:9001/cortex/api/responder/a807f82713caad19683daf9a92dd7eb0
+  795  curl -s -H "Authorization: Bearer <REDACTED>" \\nhttp://127.0.0.1:9001/cortex/api/job\?range\=0-5
+  796  curl -s -X DELETE http://127.0.0.1:8025/api/v1/messages
+  797  curl -s http://127.0.0.1:8025/api/v2/messages
+  798  curl -s -H "Authorization: Bearer <REDACTED>" \\nhttp://127.0.0.1:9001/cortex/api/job\?range\=0-3
+  799  curl -s -H "Authorization: Bearer <REDACTED>" \\n'http://127.0.0.1:9001/cortex/api/job?range=0-10'
+  800  curl -s -X POST \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "data": {\n      "_id": "~8272",\n      "id": "~8272",\n      "caseId": 1,\n      "title": "SOAR Test Case",\n      "description": "TheHive to Cortex integration test",\n      "tags": ["mail=soc01@resilient.local"],\n      "tlp": 0,\n      "pap": 0,\n      "status": "Open",\n      "severity": 1\n    },\n    "dataType": "thehive:case",\n    "tlp": 0,\n    "pap": 0,\n    "message": "",\n    "parameters": {\n      "organisation": "Resilient-SOC",\n      "user": "resilient01"\n    }\n  }' \\n  http://127.0.0.1:9001/cortex/api/responder/a807f82713caad19683daf9a92dd7eb0/run
+  801  curl -s -H "Authorization: Bearer <REDACTED>" \\nhttp://127.0.0.1:9001/cortex/api/job/3yh6XKAB1sdqyOLXipqn
+  802  curl -s http://127.0.0.1:8025/api/v2/messages
+  803  sudo docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Ports}}'
+  804  grep -RniE 'shuffle' ~/resilient-soar/docker/testing ~/resilient-soar 2>/dev/null | head -50
+  805  find ~/resilient-soar -maxdepth 3 -type f \( -iname '*shuffle*' -o -iname 'docker-compose*.yml' -o -iname 'compose*.yml' \) 2>/dev/null | head -100
+  807  docker stats --no-stream
+  808  sudo docker restart thehive
+  809  docker stats --no-stream
+  810  docker images | grep -i shuffle
+  812  cd ~\ngit clone https://github.com/Shuffle/Shuffle.git shuffle\ncd shuffle
+  813  cd ~/shuffle\nls
+  814  cd ~/shuffle\ngrep -nE 'services:|opensearch|frontend|backend|docker-socket|SHUFFLE' docker-compose.yml | head -80
+  815  cd ~/shuffle\nsed -n '63,95p' docker-compose.yml
+  816  nano ~/shuffle/docker-compose.yml
+  817  grep -n "OPENSEARCH_JAVA_OPTS" ~/shuffle/docker-compose.yml
+  818  cd ~/shuffle\nsudo docker compose up -d opensearch backend frontend
+  819  sudo docker compose ps
+  820  sudo docker logs --tail 50 shuffle-frontend
+  821  curl -I http://127.0.0.1:3001
+  822  ss -lntp | grep ':3001'
+  823  curl -I http://192.168.1.11:3001
+  824  cd ~/shuffle\ncurl -s http://127.0.0.1:5001/api/v1 | head -c 1000
+  825  sudo docker logs --tail 100 shuffle-backend
+  826  sudo docker logs shuffle-opensearch --tail 50
+  827  curl -s -u 'admin:'"$SHUFFLE_OPENSEARCH_PASSWORD" \\n  'http://127.0.0.1:9200/workflow*/_mapping' | \\n  grep -o '"value":[^}]*' | head -20
+  828  sudo docker exec shuffle-opensearch curl -sk \\n  -u "admin:${SHUFFLE_OPENSEARCH_PASSWORD}" \\n  'https://127.0.0.1:9200/workflow-*/_mapping'
+  829  grep -n '^SHUFFLE_OPENSEARCH_PASSWORD=' ~/shuffle/.env 2>/dev/null | sed 's/=.*/=<set>/'
+  830  sudo docker compose exec opensearch sh -c \\n'curl -sk -u "admin:${OPENSEARCH_INITIAL_ADMIN_PASSWORD}" https://127.0.0.1:9200/_cluster/health'
+  831  sudo docker compose exec opensearch sh -c \\n'curl -sk -u "admin:${OPENSEARCH_INITIAL_ADMIN_PASSWORD}" \\n"https://127.0.0.1:9200/workflow-000001/_mapping?pretty" | grep -A8 -B3 "\"value\"" | head -80'
+  832  sudo docker compose exec opensearch sh -c \\n'curl -sk -u "admin:${OPENSEARCH_INITIAL_ADMIN_PASSWORD}" \\n"https://127.0.0.1:9200/workflow*/_mapping?pretty" | \\ngrep -n -B3 -A5 "\"value\"" | head -120'
+  833  sudo docker compose exec opensearch sh -c \\n'curl -sk -u "admin:${OPENSEARCH_INITIAL_ADMIN_PASSWORD}" \\n"https://127.0.0.1:9200/_cat/indices/workflow*?v&s=index"'
+  834  curl -s http://127.0.0.1:5001/api/v1/health/stats
+  835  sudo docker compose exec opensearch sh -c \\n'curl -sk -u "admin:${OPENSEARCH_INITIAL_ADMIN_PASSWORD}" \\n"https://127.0.0.1:9200/workflowexecution-000001/_mapping?pretty" | \\ngrep -n -B8 -A12 "\"parameters\"" | head -120'
+  836  sudo docker compose exec opensearch sh -c \\n'curl -sk -u "admin:${OPENSEARCH_INITIAL_ADMIN_PASSWORD}" \\n"https://127.0.0.1:9200/workflowexecution-000001/_mapping?pretty" | \\ngrep -n -B5 -A8 "\"value\"" | head -80'
+  837  curl -s http://127.0.0.1:5001/api/v1/health/stats | grep -o '"run_status":"[^"]*"\|"success":[^,]*'
+  838  curl -s http://127.0.0.1:5001/api/v1/health/stats | python3 -m json.tool
+  839  sudo docker compose exec opensearch sh -c \\n'curl -sk -u "admin:${OPENSEARCH_INITIAL_ADMIN_PASSWORD}" \\n"https://127.0.0.1:9200/*/_mapping?pretty" > /tmp/all-mappings.json && \\ngrep -n -B8 -A8 "\"value\" : {" /tmp/all-mappings.json | grep -B2 -A5 "\"type\" : \"date\"" | head -80'
+  840  sudo docker compose exec opensearch sh -c \\n'curl -sk -u "admin:${OPENSEARCH_INITIAL_ADMIN_PASSWORD}" \\n"https://127.0.0.1:9200/workflowexecution-000001/_mapping?pretty" \\n| sed -n "150,280p"'
+  841  grep -n 'SHUFFLE_HEALTHCHECK' ~/shuffle/.env
+  842  sed -i 's/^SHUFFLE_HEALTHCHECK_DISABLED=false/SHUFFLE_HEALTHCHECK_DISABLED=true/' ~/shuffle/.env
+  843  cd ~/shuffle\nsudo docker compose up -d
+  844  curl -s http://127.0.0.1:5001/api/v1/health/stats
+  845  sudo docker compose ps
+  846  curl -i http://127.0.0.1:5001/api/v1/health
+  847  sudo docker exec shuffle-backend sh -c 'curl -s http://127.0.0.1:5001/api/v1/swagger.json | head -c 1000'
+  848  cd ~/shuffle\nsudo docker compose ps
+  849  curl -I http://127.0.0.1:3001\ncurl -I http://127.0.0.1:5001/api/v1/health
+  850  curl -s http://127.0.0.1:5001/api/v1/openapi.json | head -c 1000
+  851  curl -s http://127.0.0.1:5001/api/v1/swagger.json | head -c 1000
+  852  cd ~/shuffle\ngrep -RniE '"/api/v1/(workflows|apps|users|organizations)' backend | head -100
+  853  curl -s http://127.0.0.1:5001/api/v1/workflows | python3 -m json.tool | head -200
+  854  cd ~/shuffle\ngrep -RniE 'Authorization|X-API-Key|api_key|ApiKey' backend/go-app | head -80
+  855  curl -s -H "Authorization: Bearer <REDACTED>" \\nhttp://127.0.0.1:5001/api/v1/workflows
+  856  grep -n '^SHUFFLE_DEFAULT_APIKEY=' ~/shuffle/.env | sed 's/=.*/=<set>/'
+  857  cd ~/shuffle\nexport SHUFFLE_API_KEY="<REDACTED> '^SHUFFLE_DEFAULT_APIKEY=' .env | cut -d= -f2-)"
+  858  curl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  http://127.0.0.1:5001/api/v1/workflows
+  859  cd ~/resilient-soar\ndocker compose ps
+  860  cd ~/shuffle
+  861  sudo docker compose ps
+  862  cd ~/shuffle\n\ndocker compose ps
+  863  curl -s http://127.0.0.1:5001/api/v1/workflows
+  864  curl -i http://127.0.0.1:5001/api/v1/workflows
+  865  cd ~/shuffle\ngrep -n '^SHUFFLE_DEFAULT_APIKEY=' .env | sed 's/=.*/=<REDACTED>/'
+  866  cd ~/shuffle\n\nAPIKEY="<REDACTED> '^SHUFFLE_DEFAULT_APIKEY=' .env | cut -d= -f2-)"\n\ncurl -s -i \\n  -H "Authorization: Bearer <REDACTED>" \\n  http://127.0.0.1:5001/api/v1/workflows
+  867  grep -RniE 'Authorization|SHUFFLE_DEFAULT_APIKEY|api(v1)?/workflows' backend --include='*.go' 2>/dev/null | head -80
+  868  cd ~/shuffle\n\ngrep -RniE 'func .*Auth|Authenticate|Parse.*Token|parsedKey|DefaultApiKey|DEFAULT_APIKEY' \\n  backend/go-app --include='*.go' | head -120
+  869  cd ~/shuffle\n\nsed -n '301,345p' backend/go-app/main.go
+  870  cd ~/shuffle\n\ngrep -Rni 'authenticate(request)' backend/go-app --include='*.go'
+  871  cd ~/shuffle\n\ngrep -RniE 'workflows.*GET|GET.*workflows|HandleFunc.*workflows|/api/v1/workflows' \\n  backend/go-app --include='*.go' | head -120
+  872  cd ~/shuffle\n\nsed -n '5840,5885p' backend/go-app/main.go
+  873  cd ~/shuffle\n\ngrep -nE 'Use\(|middleware|authenticate|Auth' backend/go-app/main.go | tail -80
+  874  cd ~/shuffle\n\ngrep -Rni 'func RequestMiddleware' backend/go-app --include='*.go'
+  875  cd ~/shuffle\ngrep -Rni 'func RequestMiddleware' backend --include='*.go'
+  876  cd ~/shuffle\n\ngrep -Rni 'RequestMiddleware' . \\n  --include='*.go' \\n  --exclude-dir=.git \\n  | head -80
+  877  cd ~/shuffle\ngrep -nE 'module |shuffle ' backend/go-app/go.mod 2>/dev/null
+  878  cd ~/shuffle\ncurl -s http://127.0.0.1:5001/api/v1/workflows
+  879  cd ~/shuffle\n\ngrep -Rni "func RequestMiddleware" backend/go-app -A120 | head -140
+  880  grep -Rni "func GetWorkflows" backend/go-app -A80 | head -100
+  881  cd ~/shuffle\ngrep -Rni "RequestMiddleware" backend | head -30
+  882  grep -Rni "GetWorkflows" backend | head -30
+  884  curl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Org-Id: default" \\n  http://127.0.0.1:5001/api/v1/workflows
+  885  cd ~/shuffle\ngrep -Rni "RequestMiddleware" . --exclude-dir=node_modules --exclude-dir=.git | head -50
+  886  cd ~/shuffle\ngrep -n '"github.com.*shuffle\|shuffle "' backend/go-app/main.go | head -30
+  887  sed -n '1,80p' backend/go-app/main.go
+  888  cd ~/shuffle/backend/go-app\ngrep 'github.com/shuffle/shuffle-shared' go.mod go.sum 2>/dev/null | head -20
+  889  cd ~/shuffle/backend/go-app\n\nMOD=$(go env GOPATH)/pkg/mod/github.com/shuffle/shuffle-shared@v1.2.51\n\ngrep -Rni "func RequestMiddleware" "$MOD" -A120
+  890  sudo docker exec shuffle-backend sh -c 'find / -path "*shuffle-shared*" -type f 2>/dev/null | head -30'
+  891  sudo docker exec shuffle-backend sh -c 'find / -type f -name "*.go" 2>/dev/null | grep shuffle | head -30'
+  892  cd ~/shuffle\n\ngrep -RniE 'Authorization|Org-Id|OrgId|X-Org|Bearer' frontend | head -80
+  893  cd ~/shuffle\ngrep -RniE 'api/v1/workflows.*fetch|fetch.*api/v1/workflows|/api/v1/workflows`' frontend/src | head -80
+  894  cd ~/shuffle\nsed -n '720,780p' frontend/src/views/Workflows.jsx
+  895  sed -n '90,150p' frontend/src/views/Welcome.jsx
+  896  cd ~/shuffle\ncurl -s http://127.0.0.1:5001/api/v1/workflows
+  897  cd ~/shuffle\nexport SHUFFLE_API_KEY="<REDACTED> '^SHUFFLE_DEFAULT_APIKEY=' .env | cut -d= -f2-)"\ncurl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Org-Id: default" \\n  http://127.0.0.1:5001/api/v1/workflows
+  898  cd ~/resilient-soar\ndocker compose ps
+  899  cd ~/shuffle\nls -la
+  900  cd ~/shuffle\ndocker compose ps
+  901  curl -s http://127.0.0.1:9000/api/status
+  902  docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Ports}}' | grep -Ei 'thehive|cortex'
+  903  curl -s http://127.0.0.1:9000/api/v1/status
+  904  curl -s http://127.0.0.1:9000/api/v1/status/public/
+  905  curl -i http://127.0.0.1:9000/
+  906  docker logs --tail 50 thehive
+  907  curl -s http://127.0.0.1:9000/thehive/api/status
+  909  cd ~/shuffle\n\necho "=== IPs ==="\nhostname -I\n\necho\necho "=== TheHive ==="\ncurl -s http://192.168.1.11:9000/thehive/api/status\n\necho\necho "=== Shuffle ==="\ncurl -s -H "Authorization: Bearer <REDACTED>" \\n     -H "Org-Id: default" \\n     http://127.0.0.1:5001/api/v1/workflows
+  910  cd ~/shuffle\n\necho "=== API KEY CHECK ==="\n[ -n "$SHUFFLE_API_KEY" ] && echo "API key is set" || echo "API key is EMPTY"\n\necho\necho "=== SHUFFLE ROOT ==="\ncurl -i http://127.0.0.1:5001/api/v1/\n\necho\necho "=== SHUFFLE CONTAINER LOG ==="\ndocker logs --tail 30 shuffle-backend
+  911  cd ~/shuffle\n\necho "=== SHUFFLE_API_KEY =<REDACTED>"\n[ -n "$SHUFFLE_API_KEY" ] && echo "SET" || echo "EMPTY"\n\necho\necho "=== ENV ORG ==="\ngrep -E '^(SHUFFLE_DEFAULT_APIKEY|SHUFFLE_DEFAULTORG|SHUFFLE_ORG)' .env
+  912  cd ~/shuffle\n\ngrep '^SHUFFLE_DEFAULT_APIKEY=' .env
+  913  docker logs shuffle-backend 2>&1 | grep -Ei 'organization|org|apikey' | tail -30
+  914  curl -s http://127.0.0.1:5001/api/v1/orgs/080b0a55-5e53-4741-9170-f5c7a30d9ae1
+  915  export SHUFFLE_API_KEY="<REDACTED>"\n\ncurl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Org-Id: 080b0a55-5e53-4741-9170-f5c7a30d9ae1" \\n  http://127.0.0.1:5001/api/v1/workflows
+  916  docker logs --since 2m shuffle-backend 2>&1 | tail -50
+  917  docker logs --since 5m shuffle-backend 2>&1 | grep -Ei 'activate|app|thehive|error|failed|download' | tail -80
+  918  docker logs --since 10m shuffle-orborus 2>&1 | grep -Ei 'thehive|image|download|pull|error|failed' | tail -100
+  919  docker images | grep -i thehive
+  920  docker ps -a --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}' | grep -i thehive
+  921  docker exec shuffle-orborus sh -c 'docker images | grep -i thehive'
+  922  docker logs --since 5m shuffle-orborus 2>&1 | tail -80
+  923  cd ~/shuffle\ndocker ps --format 'table {{.Names}}\t{{.Status}}' | grep shuffle-orborus
+  924  docker logs --since 5m shuffle-orborus 2>&1 | tail -100
+  925  cd ~/shuffle\n\ndocker inspect shuffle-orborus --format '{{range .Config.Env}}{{println .}}{{end}}' | grep -Ei 'ENVIRONMENT|BACKEND|SHUFFLE|ORBORUS'
+  926  docker exec shuffle-orborus sh -c 'curl -s http://shuffle-backend:5001/api/v1/healthcheck || wget -qO- http://shuffle-backend:5001/api/v1/healthcheck'
+  927  docker exec shuffle-orborus sh -c 'wget -qO- http://shuffle-backend:5001/api/v1/workflows'
+  928  docker logs shuffle-backend 2>&1 | grep -Ei 'execution|orborus|workflow|runner|environment|error|failed' | tail -100
+  929  cd ~/shuffle\ndocker ps -a --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}' | grep -Ei 'worker|orborus|shuffle'
+  930  docker logs --since 15m shuffle-orborus 2>&1 | tail -200
+  931  docker images | grep 'shuffle-worker'
+  932  docker run --rm ghcr.io/shuffle/shuffle-worker:latest --help
+  933  cd ~/shuffle\ngrep -n -A30 -B10 'shuffle-worker' docker-compose.yml
+  934  docker inspect shuffle-orborus --format '{{range .Mounts}}{{println .Source "->" .Destination}}{{end}}'
+  935  docker ps -a --format '{{.CreatedAt}}\t{{.Names}}\t{{.Image}}\t{{.Status}}' | sort -r | head -30
+  936  docker exec shuffle-orborus sh -c 'ls -l /var/run/docker.sock && echo "---" && env | grep -E "SHUFFLE_WORKER_IMAGE|SHUFFLE_SWARM_CONFIG|DOCKER_API_VERSION|BASE_URL|BACKEND_HOSTNAME"'
+  937  docker exec shuffle-orborus sh -c 'python3 - <<PY\nimport socket\ns=socket.socket(socket.AF_UNIX)\ns.connect("/var/run/docker.sock")\ns.sendall(b"GET /_ping HTTP/1.1\r\nHost: localhost\r\n\r\n")\nprint(s.recv(1024).decode())\nPY'
+  938  docker exec shuffle-orborus sh -c 'wget -qO- --unix-socket=/var/run/docker.sock http://localhost/_ping'
+  939  docker exec shuffle-orborus sh -c 'command -v nc || command -v socat || command -v curl'
+  940  docker exec shuffle-orborus sh -c 'printf "GET /_ping HTTP/1.1\r\nHost: localhost\r\n\r\n" | nc -U /var/run/docker.sock'
+  941  docker restart shuffle-orborus && sleep 5 && docker logs --tail 100 shuffle-orborus
+  942  docker info --format 'Swarm={{.Swarm.LocalNodeState}} NodeIP={{.Swarm.NodeAddr}}'
+  944  docker swarm init --advertise-addr 192.168.1.11 --listen-addr 192.168.1.11:2377
+  945  docker restart shuffle-orborus && sleep 8 && docker logs --tail 80 shuffle-orborus
+  946  docker service ls
+  947  docker service ps shuffle-workers --no-trunc
+  948  docker ps -a --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}' | grep -Ei 'shuffle|worker|TheHive'
+  949  docker logs shuffle-workers.1.x2z2msc64x07o3pg8r1g3fqu4 2>&1 | tail -100
+  950  docker service ps shuffle-tools_1-2-0 --no-trunc
+  951  docker service ls
+  952  docker service ps shuffle-ai_1-1-0 --no-trunc
+  953  docker ps -a --filter "name=shuffle-ai_1-1-0"
+  954  docker service ps shuffle-ai_1-1-0 --format 'table {{.Name}}\t{{.CurrentState}}\t{{.Error}}'
+  955  docker inspect p9ubnwddr9473czp9k4mq5zk7 --format '{{json .Status}}'
+  956  docker inspect p9ubnwddr9473czp9k4mq5zk7
+  957  docker image inspect frikky/shuffle:shuffle-ai_1.1.0 --format 'ID={{.Id}} SIZE={{.Size}}'
+  958  docker service logs --tail 100 shuffle-ai_1-1-0
+  959  docker service ls
+  960  docker ps
+  961  docker service ls
+  962  docker logs --tail 100 shuffle-opensearch
+  963  curl -k -s -o /dev/null -w 'HTTP=%{http_code}\n' https://127.0.0.1:9200
+  964  cd ~/shuffle && docker ps --format 'table {{.Names}}\t{{.Status}}'
+  965  docker ps --format 'table {{.Names}}\t{{.Status}}'
+  966  docker inspect --format='{{range .State.Health.Log}}{{.Output}}{{end}}' elasticsearch | tail -20
+  967  docker logs --tail 80 elasticsearch
+  968  docker ps --format 'table {{.Names}}\t{{.Status}}' | grep -E 'elasticsearch|cassandra|thehive|cortex|shuffle-opensearch'
+  969  docker inspect elasticsearch
+  970  docker inspect elasticsearch --format '{{json .Config.Healthcheck}}'
+  971  docker exec elasticsearch curl -i -u 'elastic:<ELASTIC_PASSWORD>' http://elasticsearch:9200/_cat/health
+  972  curl -k -s -o /dev/null -w 'HTTP=%{http_code}\n' https://127.0.0.1:9200
+  973  docker logs --tail 120 shuffle-backend 2>&1 | grep -Ei 'opensearch|elasticsearch|database|error|failed|connection|workflow'
+  974  docker logs --tail 200 shuffle-backend 2>&1 | grep -B5 -A8 'Bad Status code in Workflow'
+  975  docker ps --filter "name=cortex" --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+  976  docker exec cortex sh -c 'ls -la /opt/Cortex-Analyzers 2>&1; echo "-----"; ls -la /opt/cortexneurons 2>&1'
+  977  docker exec cortex sh -c 'find /opt/cortexneurons/analyzers -maxdepth 2 -type f | head -30; echo "----- RESPONDERS -----"; find /opt/cortexneurons/responders -maxdepth 2 -type f | head -30'
+  978  docker inspect cortex --format '{{range .Mounts}}{{println .Source "->" .Destination}}{{end}}'
+  979  cd ~/resilient-soar/docker/testing/cortex/neurons && find . -maxdepth 2 -type f | sort | head -50
+  980  cd ~/resilient-soar/docker/testing && grep -nE 'CORTEX|neurons|analyzer|responder' docker-compose.yml | head -80
+  981  cd ~/resilient-soar/docker/testing && find . -maxdepth 3 -type f | grep -Ei 'analy|neuron|cortex' | head -80
+  982  cd ~/resilient-soar/docker/testing/cortex && cat Dockerfile
+  983  cd ~/resilient-soar/docker/testing && grep -nA15 -B5 'cortex:' docker-compose.yml
+  984  cd ~/resilient-soar/docker/testing/cortex/neurons && git clone --depth 1 https://github.com/TheHive-Project/Cortex-Analyzers.git analyzers
+  985  cd ~/resilient-soar/docker/testing/cortex/neurons/analyzers && ls -la | head -30
+  986  cd ~/resilient-soar/docker/testing/cortex/neurons && mv analyzers/analyzers ./analyzer_tmp && rm -rf analyzers && mv analyzer_tmp analyzers
+  987  ls ~/resilient-soar/docker/testing/cortex/neurons/analyzers | head
+  988  docker restart cortex
+  989  docker logs --tail 100 cortex 2>&1 | grep -Ei 'analy|neuron|error|warn'
+  990  curl -s http://192.168.1.11:9001/cortex/api/status
+  991  curl -s http://192.168.1.11:9001/cortex/api/analyzer | head -c 2000
+  992  curl -i http://192.168.1.11:9001/cortex/api/analyzer | head -20
+  993  curl -s -H "Authorization: Bearer <REDACTED>" \\n  http://192.168.1.11:9001/cortex/api/analyzer | head -c 2000
+  994  grep -nE 'authType|auth|key' ~/resilient-soar/docker/testing/cortex/config/application.conf | head -30
+  995  sed -n '18,60p' ~/resilient-soar/docker/testing/cortex/config/application.conf
+  996  curl -s -u 'USERNAME:PASSWORD' http://192.168.1.11:9001/cortex/api/analyzer
+  997  echo -n "Cortex API key: "\nread -s CORTEX_API_KEY\necho\ncurl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  http://192.168.1.11:9001/cortex/api/analyzer
+  999  curl -s -H "Authorization: Bearer <REDACTED>" \\nhttp://192.168.1.11:9001/cortex/api/analyzer
+ 1000  curl -s -X POST \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"data":"8.8.8.8","dataType":"ip","tlp":2,"pap":2,"message":"SOAR test"}' \\n  http://192.168.1.11:9001/cortex/api/analyzer/TestAnalyzer_1_0/run
+ 1001  docker images | grep -i testanalyzer
+ 1002  docker exec cortex sh -c 'ls -l /var/run/docker.sock && id'
+ 1003  docker logs cortex 2>&1 | grep -Ei 'TestAnalyzer|worker|docker|job' | tail -50
+ 1004  curl -s -X POST \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"data":"8.8.8.8","dataType":"ip","tlp":2,"pap":2,"message":"SOAR test"}' \\n  http://192.168.1.11:9001/cortex/api/analyzer/TestAnalyzer_1_0/run
+ 1005  curl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  http://192.168.1.11:9001/cortex/api/analyzer | \\njq -r '.[] | "\(.id) | \(.analyzerDefinitionId) | \(.name) \(.version)"'
+ 1006  curl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  http://192.168.1.11:9001/cortex/api/worker/TestAnalyzer_1_0 | jq
+ 1007  curl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  http://192.168.1.11:9001/cortex/api/analyzer/TestAnalyzer_1_0 | jq
+ 1008  docker logs cortex 2>&1 | grep -A10 -B3 "TestAnalyzer 1.0" | tail -30
+ 1009  find ~/resilient-soar/docker/testing/cortex/neurons/analyzers -maxdepth 3 -type f \( -name 'TestAnalyzer*.json' -o -name '*TestAnalyzer*' \) -print
+ 1010  cat ~/resilient-soar/docker/testing/cortex/neurons/analyzers/TestAnalyzer/TestAnalyzer.json | jq
+ 1011  ls -l ~/resilient-soar/docker/testing/cortex/neurons/analyzers/TestAnalyzer/testing.py
+ 1012  docker exec cortex sh -c 'cd /opt/cortexneurons/analyzers/TestAnalyzer && python3 testing.py --help'
+ 1013  echo '{"data":"8.8.8.8","dataType":"ip","tlp":2,"pap":2}' | \\ndocker exec -i cortex sh -c 'cd /opt/cortexneurons/analyzers/TestAnalyzer && python3 testing.py'
+ 1014  echo '{"data":"8.8.8.8","dataType":"ip","tlp":2,"pap":2,"config":{"throw_error":false}}' | \\ndocker exec -i cortex sh -c 'cd /opt/cortexneurons/analyzers/TestAnalyzer && python3 testing.py'
+ 1015  echo '{"data":"8.8.8.8","dataType":"ip","tlp":2,"pap":2,"config":{"service":"testing","throw_error":false}}' | \\ndocker exec -i cortex sh -c 'cd /opt/cortexneurons/analyzers/TestAnalyzer && python3 testing.py'
+ 1016  curl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  "http://192.168.1.11:9001/cortex/api/analyzer" | jq '.[0] | {id, name, version, analyzerDefinitionId, dockerImage, command}'
+ 1017  curl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  "http://192.168.1.11:9001/cortex/api/analyzer" | \\njq -r '.[] | "\(.id) | \(.name) | \(.version) | \(.dockerImage)"' | grep -i test
+ 1018  curl -s -X POST \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "data":"8.8.8.8",\n    "dataType":"ip",\n    "tlp":2,\n    "pap":2,\n    "message":"SOAR test",\n    "parameters":{\n      "some_string":"some string..",\n      "some_list":["item1","item2","item3"],\n      "some_number":1,\n      "throw_error":false\n    }\n  }' \\n  "http://192.168.1.11:9001/cortex/api/analyzer/576c04e3ea205d8e3179d8b7453b07f1/run?force=1"
+ 1019  curl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  "http://192.168.1.11:9001/cortex/api/job/SmKjYaABXY9xl1BaReUY" | jq '{id,status,message,errorMessage,report}'
+ 1020  docker ps -a --no-trunc | grep -E 'testanalyzer|SmKjYaABXY9xl1BaReUY'
+ 1021  docker logs cortex 2>&1 | grep -F 'SmKjYaABXY9xl1BaReUY' -C 10
+ 1022  docker logs cortex 2>&1 | grep -Ei 'WorkerSrv|TestAnalyzer|Docker|worker|SmKj' | tail -100
+ 1023  docker run --rm -i ghcr.io/thehive-project/testanalyzer:1
+ 1024  echo '{"data":"8.8.8.8","dataType":"ip","tlp":2,"pap":2,"config":{"service":"testing","throw_error":false}}' | docker run --rm -i ghcr.io/thehive-project/testanalyzer:1
+ 1025  docker exec cortex sh -c 'echo "job_directory=$job_directory"; echo "docker_job_directory=$docker_job_directory"; ls -la /tmp/cortex-jobs'
+ 1026  docker events --since 10m --until 0s --filter type=container --format '{{.Time}} {{.Action}} {{.ID}} {{.Actor.Attributes.name}} {{.Actor.Attributes.image}}' | tail -
+ 1027  curl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  "http://192.168.1.11:9001/cortex/api/job/SmKjYaABXY9xl1BaReUY" | jq '{id,status,statusMessage,message,errorMessage,startDate,endDate}'
+ 1028  curl -X POST -H "Content-Type: application/json" -d '{"test": "hello from kali"}' http://192.168.1.11:3001/api/v1/hooks/webhook_<WEBHOOK_ID>
+ 1029  docker inspect thehive | grep -i "Config" -A 20
+ 1030  ls -la /home/kali/resilient-soar/docker/testing/thehive/config
+ 1031  cat /home/kali/resilient-soar/docker/testing/thehive/config/application.conf
+ 1032  cat << 'EOF' >> /home/kali/resilient-soar/docker/testing/thehive/config/application.conf\n\n# WEBHOOK NOTIFIER CONFIGURATION\nhalo.notification.webhook {\n  shuffle {\n    url = "http://192.168.1.11:3001/api/v1/hooks/webhook_<WEBHOOK_ID>"\n    ws = true\n  }\n}\nEOF
+ 1033  docker restart thehive
+ 1034  curl -s http://192.168.1.11:9000/thehive/api/status
+ 1035  docker logs --tail 20 thehive
+ 1036  curl -s http://192.168.1.11:9000/thehive/api/v1/status/public
+ 1037  curl -X POST http://192.168.1.11:9000/thehive/api/v1/alert \\n  -H "Content-Type: application/json" \\n  -d '{\n    "title": "Test Alert from Resilient SOC",\n    "description": "Testing Shuffle Webhook Integration",\n    "severity": 2,\n    "artifacts": [\n      {\n        "dataType": "ip",\n        "data": "8.8.8.8"\n      }\n    ]\n  }'
+ 1038  docker exec -it thehive ctl user create -u admin -p admin -t admin --name Admin --surname User || echo "Admin might already exist"
+ 1039  docker exec -it thehive find / -name "*thehive*" -type f 2>/dev/null | grep bin
+ 1040  docker exec -it thehive /opt/thehive/bin/thehive --help
+ 1041  docker exec -it thehive /opt/thehive/bin/thehive -Dconfig.file=/etc/thehive/application.conf --help
+ 1042  docker logs thehive 2>&1 | grep -i "user" | head -n 15
+ 1043  curl -s -X POST http://192.168.1.11:9000/thehive/api/v1/auth/login \\n  -H "Content-Type: application/json" \\n  -d '{"user": "admin@thehive.local", "password": "admin"}'
+ 1044  curl -X POST http://192.168.1.11:9000/thehive/api/v1/alert \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "title": "Test Alert from Terminal",\n    "description": "Testing Shuffle Webhook Integration with Auth",\n    "severity": 2,\n    "artifacts": [\n      {\n        "dataType": "ip",\n        "data": "8.8.8.8"\n      }\n    ]\n  }'
+ 1045  docker exec -it thehive /opt/thehive/bin/thehive -Dconfig.file=/etc/thehive/application.conf << 'EOF'
+ 1046  docker exec -it thehive_cassandra_1 cqlsh -e "SELECT id, login, name, status FROM thehive.user;"
+ 1047  docker ps --format "table {{.Names}}\t{{.Image}}"
+ 1048  docker exec -it cassandra cqlsh -e "SELECT id, login, name, status FROM thehive.user;"
+ 1049  curl -s http://localhost:9200/_cat/indices\?v
+ 1050  ed. Please check what was the environment property CQL_HISTORY set to.\n\n<stdin>:1:InvalidRequest: Error from server: code=2200 [Invalid query] message="table user does not exist"\n ✘ kali@kali \M-0 ~/resilient-soar/docker/testing/cortex/neurons \M-0 \M-  main ± \M-0 curl -s http://localhost:9200/_cat/indices\?v\n ✘ kali@kali \M-0 ~/resilient-soar/docker/testing/cortex/neurons \M-0 \M-  main ± \M-0 \n
+ 1051  docker port elasticsearch
+ 1052  docker exec -it thehive grep -rn "auth" /etc/thehive/application.conf
+ 1053  docker exec -it thehive sh -c 'echo "auth.providers = [{type = local, name = local, realm = local}]" >> /etc/thehive/application.conf'
+ 1056  cat /home/kali/resilient-soar/docker/testing/thehive/config/application.conf
+ 1057  cat << 'EOF' >> /home/kali/resilient-soar/docker/testing/thehive/config/application.conf\n\n# AUTHENTICATION CONFIGURATION\nauth.providers = [\n  {\n    name = "local"\n    type = "local"\n  }\n]\nEOF
+ 1058  cd /home/kali/resilient-soar/docker/testing/\ndocker compose down -v\ndocker compose up -d
+ 1059  docker logs elasticsearch --tail 30
+ 1060  docker compose down -v\nrm -rf data/ 2>/dev/null\ndocker compose up -d
+ 1061  curl -X POST http://192.168.1.11:9000/thehive/api/v1/alert \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "title": "Test Alert from Terminal",\n    "description": "Testing Shuffle Webhook Integration with Auth",\n    "severity": 2,\n    "artifacts": [\n      {\n        "dataType": "ip",\n        "data": "8.8.8.8"\n      }\n    ]\n  }'
+ 1062  docker ps --format "table {{.Names}}\t{{.Ports}}"
+ 1063  curl -X POST http://127.0.0.1:9000/thehive/api/v1/alert \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "title": "Test Alert from Terminal",\n    "description": "Testing Shuffle Webhook Integration with Auth",\n    "severity": 2,\n    "artifacts": [\n      {\n        "dataType": "ip",\n        "data": "8.8.8.8"\n      }\n    ]\n  }'
+ 1064  docker exec -it thehive cqlsh -e "SELECT * FROM thehive.user;" 2>/dev/null || docker exec -it thehive sh -c "cat /opt/thp/thehive/conf/application.conf"
+ 1065  docker exec -it thehive bin/thehive user create -u admin -n Administrator -N admin@thehive.local -p "<PASSWORD>" -r admin
+ 1066  curl -X POST http://127.0.0.1:9000/thehive/api/v1/alert \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "title": "Test Alert from Terminal",\n    "description": "Testing Shuffle Webhook Integration with Auth",\n    "severity": 2,\n    "artifacts": [\n      {\n        "dataType": "ip",\n        "data": "8.8.8.8"\n      }\n    ]\n  }'
+ 1067  docker ps\ndocker logs thehive --tail 20
+ 1068  curl -X POST http://127.0.0.1:9000/thehive/api/v1/alert \\n  -u "admin@thehive.local:<THEHIVE_PASSWORD>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "title": "Test Alert from Terminal",\n    "description": "Testing Shuffle Webhook Integration with Auth",\n    "severity": 2,\n    "artifacts": [\n      {\n        "dataType": "ip",\n        "data": "8.8.8.8"\n      }\n    ]\n  }'
+ 1069  docker logs -f thehive
+ 1070  curl -X POST http://127.0.0.1:9000/api/v1/alert \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "title": "Test Alert from Terminal",\n    "description": "Testing Shuffle Webhook Integration with API Key",\n    "severity": 2,\n    "artifacts": [\n      {\n        "dataType": "ip",\n        "data": "8.8.8.8"\n      }\n    ]\n  }'
+ 1071  curl -X POST http://127.0.0.1:9000/thehive/api/v1/alert \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "title": "Test Alert from Terminal",\n    "description": "Testing Shuffle Webhook Integration with API Key",\n    "severity": 2,\n    "artifacts": [\n      {\n        "dataType": "ip",\n        "data": "8.8.8.8"\n      }\n    ]\n  }'
+ 1072  docker exec -it thehive bash
+ 1073  docker compose down -v
+ 1074  docker compose up -d
+ 1075  docker compose down -v\ndocker system prune -f
+ 1076  docker compose up -d
+ 1077  docker logs -f thehive
+ 1078  cd ~/resilient-soar/docker/testing
+ 1079  docker compose down
+ 1080  docker compose up -d
+ 1081  docker logs --tail 50 elasticsearch
+ 1083  docker compose up -d
+ 1084  curl -I http://192.168.1.11:8000
+ 1088  sudo ss -lntp | grep -E ':(80|8000|9000)\b'
+ 1091  for ip in 192.168.1.2 192.168.1.7 192.168.1.10; do\n  echo "===== $ip ====="\n  curl -sI --connect-timeout 2 "http://$ip:8000" | head -n 1\ndone
+ 1092  nc -zv 192.168.1.2 80 443 8080 2>&1 | grep -v "Connection refused"
+ 1093  nc -zv 192.168.1.7 80 443 8080 2>&1 | grep -v "Connection refused"
+ 1094  nc -zv 192.168.1.10 80 443 8080 2>&1 | grep -v "Connection refused"
+ 1095  nc -zv 192.168.1.1 80 443 8080 8443 2>&1 | grep -v "Connection refused"
+ 1098  docker logs --tail 50 thehive
+ 1099  grep -i "url" application.conf
+ 1101  grep -i "url" ./thehive/config/application.conf
+ 1102  echo 'play.http.contextPath = "/thehive"' >> ./thehive/config/application.conf
+ 1103  docker restart thehive
+ 1104  git checkout ./thehive/config/application.conf\ndocker restart thehive
+ 1105  git checkout ./thehive/config/application.conf
+ 1106  docker compose ps
+ 1107  curl -X 'GET' \\n  'http://192.168.1.11:9000/thehive/api/v1/organisation' \\n  -H 'accept: application/json' \\n  -H 'Authorization: Bearer <REDACTED>' \\n  -H 'X-Organisation: Resilient'
+ 1108  curl -X 'GET' \\n  'http://192.168.1.11:9000/api/v1/organisation' \\n  -H 'accept: application/json' \\n  -H 'Authorization: Bearer <REDACTED>' \\n  -H 'X-Organisation: Resilient'
+ 1109  curl -X 'GET' \\n  'http://192.168.1.11:9000/api/v1/user/current' \\n  -H 'accept: application/json' \\n  -H 'Authorization: Bearer <REDACTED>'
+ 1110  curl -X 'GET' 'http://192.168.1.11:9000/api/v1/user/current' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1111  docker compose ps
+ 1112  curl -X 'POST' \\n  'http://192.168.1.11:9000/api/v1/webhook' \\n  -H 'accept: application/json' \\n  -H 'Authorization: Bearer <REDACTED>' \\n  -H 'X-Organisation: Resilient' \\n  -H 'Content-Type: application/json' \\n  -d '{\n  "name": "Shuffle-Webhook",\n  "url": "https://192.168.1.11:3443/api/v1/hooks/webhook_<WEBHOOK_ID>",\n  "contentType": "application/json",\n  "events": ["case", "alert"]\n}'
+ 1113  curl -X 'POST' \\n  'http://192.168.1.11:9000/api/v1/matrix/webhook' \\n  -H 'accept: application/json' \\n  -H 'Authorization: Bearer <REDACTED>' \\n  -H 'X-Organisation: Resilient' \\n  -H 'Content-Type: application/json' \\n  -d '{\n  "name": "Shuffle-Webhook",\n  "url": "https://192.168.1.11:3443/api/v1/hooks/webhook_<WEBHOOK_ID>",\n  "contentType": "application/json",\n  "events": ["case", "alert"]\n}'
+ 1114  cd ~/resilient-soar/docker/testing
+ 1115  find . -name "application.conf" -o -name "*thehive*conf"
+ 1116  grep -rn "webhook" ~/resilient-soar/docker/testing/thehive/config/application.conf
+ 1117  grep -iE "notification|webhook|alert|case" ~/resilient-soar/docker/testing/thehive/config/application.conf
+ 1118  cat ~/resilient-soar/docker/testing/thehive/config/application.conf
+ 1119  cat ~/resilient-soar/docker/testing/thehive/config/secret.conf
+ 1120  find ~/resilient-soar/docker/testing/thehive -type f
+ 1121  cat ~/resilient-soar/docker/testing/thehive/config/index.conf
+ 1122  grep -rn "modules" ~/resilient-soar/docker/testing/thehive/config/
+ 1123  curl -X 'GET' 'http://192.168.1.11:9000/api/v1/organisation' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1124  curl -X 'GET' 'http://192.168.1.11:9000/api/v1/user/current' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1125  curl -X 'GET' 'http://192.168.1.11:9000/api/v0/user/current' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1126  curl -X 'GET' 'http://192.168.1.11:9000/thehive/api/v1/user/current' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1127  curl -X 'GET' 'http://192.168.1.11:9000/thehive/api/v1/organisation/~81932352' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1128  curl -X 'GET' 'http://192.168.1.11:9000/thehive/api/v1/webhook' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1129  curl -X 'GET' 'http://192.168.1.11:9000/thehive/api/v1/cfg' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1130  curl -X 'GET' 'http://192.168.1.11:9000/thehive/api/v1/status' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1131  curl -X 'GET' 'http://192.168.1.11:9000/thehive/api/v1/notification' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1132  curl -X 'GET' 'http://192.168.1.11:9000/thehive/api/v1/matrix' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1133  curl -X 'GET' 'http://192.168.1.11:9000/thehive/api/v1/query' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>' -H 'Content-Type: application/json' -d '{"query": [{"_name": "listLogin"}]}'
+ 1134  curl -X 'POST' 'http://192.168.1.11:9000/thehive/api/v1/v1/query' -H 'accept: application/json' -H 'Authorization: Bearer <REDACTED>'
+ 1135  cat ~/resilient-soar/docker/testing/thehive/config/application.conf
+ 1136  nano ~/resilient-soar/docker/testing/thehive/config/application.conf
+ 1137  docker-compose down\ndocker-compose up -d
+ 1140  docker compose up -d
+ 1141  curl -X POST 'http://192.168.1.11:3001/api/v1/hooks/webhook_<WEBHOOK_ID>' \\n  -H 'Content-Type: application/json' \\n  -d '{"test": true, "message": "Hello from TheHive and Resilient SOC"}'
+ 1142  docker logs -f thehive
+ 1143  cd ~/resilient-soar/docker/testing\n\ndocker compose ps
+ 1144  docker compose ps\ndocker inspect cassandra --format '{{json .State.Health}}' | jq\ndocker inspect elasticsearch --format '{{json .State.Health}}' | jq
+ 1145  docker compose logs --tail=80 cassandra elasticsearch
+ 1146  sleep 30\ndocker compose ps
+ 1148  docker compose ps~
+ 1149  docker compose ps
+ 1150  curl -k -I https://192.168.1.11
+ 1151  curl -sk https://192.168.1.11:3443/api/v1/hooks | head
+ 1152  docker ps --format 'table {{.Names}}\t{{.Ports}}' | grep -i shuffle
+ 1153  curl -s http://192.168.1.11:5001/api/v1/health
+ 1154  curl -s http://192.168.1.11:5001/api/v1/hooks/webhook_<WEBHOOK_ID>
+ 1155  curl -X POST "http://192.168.1.11:9000/api/v1/cfg/endpoints" \\n-H "Authorization: Bearer <REDACTED>" \\n-H "Content-Type: application/json" \\n-d '{\n  "name": "Shuffle-Webhook-Endpoint",\n  "url": "http://192.168.1.11:5001/api/v1/hooks/webhook_<WEBHOOK_ID>",\n  "version": 1\n}'
+ 1156  curl -X POST "http://192.168.1.11:9000/api/v1/cfg/notifications" \\n-H "Authorization: Bearer <REDACTED>" \\n-H "Content-Type: application/json" \\n-d '{\n  "name": "Shuffle-Case-Trigger",\n  "trigger": "CaseCreated",\n  "endpoint": "Shuffle-Webhook-Endpoint",\n  "description": "Trigger Shuffle webhook on new case creation"\n}'
+ 1157  curl -X POST "http://192.168.1.11:9000/api/v1/status"
+ 1159  cat ./thehive/config/application.conf
+ 1160  sed -i 's/port = 3001/port = 5001/g' ./thehive/config/application.conf
+ 1161  docker restart thehive
+ 1162  docker logs --since 5m thehive 2>&1 | grep -iE 'webhook|notification|shuffle|error'
+ 1163  grep -A7 -B2 'webhook {' ./thehive/config/application.conf
+ 1164  docker logs -f thehive
+ 1165  docker logs --since 2m thehive 2>&1 | grep -iE 'webhook|notification|5001|error'
+ 1166  docker logs -f thehive
+ 1167  docker logs --since 2m shuffle-backend 2>&1 | grep -Ei 'webhook|execution|hook|workflow'
+ 1168  docker ps --format 'table {{.Names}}\t{{.Ports}}'
+ 1169  docker logs --since 5m shuffle-backend 2>&1 | grep -Ei 'webhook|execution|hook|workflow|<WEBHOOK_ID>|trigger'
+ 1170  docker logs --since 10m thehive 2>&1 | grep -Ei 'webhook|notification|5001|<WEBHOOK_ID>|notification.*error|http'
+ 1171  sudo tcpdump -i any port 5001 -nn -v
+ 1172  nano ./thehive/config/application.conf
+ 1173  cat ./thehive/config/application.conf
+ 1174  docker restart thehive
+ 1175  sudo tcpdump -i any port 5001 -nn -v
+ 1176  docker logs --since 2m thehive 2>&1 | grep -iE 'config|error|notification|webhook'
+ 1177  docker logs --since 3m thehive 2>&1 | grep -i 'module'
+ 1178  docker exec -it thehive find /opt/thp/thehive -maxdepth 3 -name "*connector*" -o -name "*webhook*"
+ 1179  docker logs --since 3m thehive 2>&1 | tail -n 20
+ 1180  docker logs thehive --tail 30
+ 1182  import json\nimport requests\n\n# الإعدادات الأساسية\nTHEHIVE_URL = "http://192.168.1.11:9000/thehive/api/v1"\nTHEHIVE_API_KEY = "<REDACTED>"\nSHUFFLE_WEBHOOK_URL = (\n    "http://192.168.1.11:5001/api/v1/hooks/webhook_<WEBHOOK_ID>"\n)\n\nheaders = {\n    "Authorization": f"Bearer {THEHIVE_API_KEY}",\n    "Accept": "application/json",\n}\n\n\ndef listen_to_thehive_stream():\n  stream_url = f"{THEHIVE_URL}/stream"\n  print(f"[*] Connecting to TheHive stream: {stream_url}")\n\n  try:\n    # فتح اتصال مستمر (Streaming connection) مع TheHive\n    response = requests.get(stream_url, headers=headers, stream=True, timeout=30)\n\n    if response.status_code != 200:\n      print(\n          f"[-] Failed to connect to stream. Status code:"\n          f" {response.status_code}, Response: {response.text}"\n      )\n      return\n\n    for line in response.iter_lines():\n      if line:\n        decoded_line = line.decode("utf-8")\n        if decoded_line.startswith("data:"):\n          try:\n            event_data = json.loads(decoded_line[5:].strip())\n\n            # التحقق مما إذا كان الحدث عبارة عن إنشاء حالة جديدة\n            # في TheHive 5، صيغة الأحداث تعتمد على نوع الـ object و operation\n            object_type = event_data.get("objectType")\n            operation = event_data.get("operation")\n\n            print(\n                f"[+] Received event: Object={object_type},"\n                f" Operation={operation}"\n            )\n\n            if object_type == "case" and operation == "Create":\n              case_details = event_data.get("details", {})\n              print(\n                  "[!] New Case Created! Forwarding to Shuffle SOAR..."\n                  f" {case_details.get('title')}"\n              )\n\n              # إرسال البيانات إلى Shuffle Webhook\n              webhook_response = requests.post(\n                  SHUFFLE_WEBHOOK_URL, json=event_data, timeout=10\n              )\n              if webhook_response.status_code == 200:\n                print(\n                    "[+] Successfully forwarded case to Shuffle SOAR"\n                    "."\n                )\n              else:\n                print(\n                    "[-] Failed to forward to Shuffle. Status:"\n                    f" {webhook_response.status_code}"\n                )\n\n          except json.JSONDecodeError:\n            continue\n\n  except Exception as e:\n    print(f"[-] Error in stream connection: {e}")\n\n\nif __name__ == "__main__":\n  while True:\n    listen_to_thehive_stream()
+ 1183  cat << 'EOF' > thehive_to_shuffle.py\nimport requests\nimport json\n\nTHEHIVE_URL = "http://192.168.1.11:9000/thehive/api/v1"\nTHEHIVE_API_KEY = "<REDACTED>"\nSHUFFLE_WEBHOOK_URL = "http://192.168.1.11:5001/api/v1/hooks/webhook_<WEBHOOK_ID>"\n\nheaders = {\n    "Authorization": f"Bearer {THEHIVE_API_KEY}",\n    "Accept": "application/json"\n}\n\ndef listen_to_thehive_stream():\n    stream_url = f"{THEHIVE_URL}/stream"\n    print(f"[*] Connecting to TheHive stream: {stream_url}")\n    \n    try:\n        response = requests.get(stream_url, headers=headers, stream=True, timeout=30)\n        \n        if response.status_code != 200:\n            print(f"[-] Failed to connect to stream. Status code: {response.status_code}, Response: {response.text}")\n            return\n            \n        for line in response.iter_lines():\n            if line:\n                decoded_line = line.decode('utf-8')\n                if decoded_line.startswith("data:"):\n                    try:\n                        event_data = json.loads(decoded_line[5:].strip())\n                        object_type = event_data.get("objectType")\n                        operation = event_data.get("operation")\n                        \n                        print(f"[+] Received event: Object={object_type}, Operation={operation}")\n                        \n                        if object_type == "case" and operation == "Create":\n                            case_details = event_data.get("details", {})\n                            print(f"[!] New Case Created! Forwarding to Shuffle SOAR... {case_details.get('title')}")\n                            \n                            webhook_response = requests.post(SHUFFLE_WEBHOOK_URL, json=event_data, timeout=10)\n                            if webhook_response.status_code == 200:\n                                print("[+] Successfully forwarded case to Shuffle SOAR.")\n                            else:\n                                print(f"[-] Failed to forward to Shuffle. Status: {webhook_response.status_code}")\n                                \n                    except json.JSONDecodeError:\n                        continue\n                        \n    except Exception as e:\n        print(f"[-] Error in stream connection: {e}")\n\nif __name__ == "__main__":\n    while True:\n        listen_to_thehive_stream()\nEOF
+ 1184  python3 thehive_to_shuffle.py
+ 1185  cat << 'EOF' > thehive_to_shuffle.py\nimport requests\nimport json\n\nTHEHIVE_URL = "http://192.168.1.11:9000/thehive/api/v1"\nTHEHIVE_API_KEY = "<REDACTED>"\nSHUFFLE_WEBHOOK_URL = "http://192.168.1.11:5001/api/v1/hooks/webhook_<WEBHOOK_ID>"\n\nheaders = {\n    "Authorization": "Bearer " + THEHIVE_API_KEY,\n    "Accept": "application/json"\n}\n\ndef listen_to_thehive_stream():\n    stream_url = THEHIVE_URL + "/stream"\n    print("[*] Connecting to TheHive stream: " + stream_url)\n    \n    try:\n        response = requests.get(stream_url, headers=headers, stream=True, timeout=30)\n        \n        if response.status_code != 200:\n            print("[-] Failed to connect. Status code: " + str(response.status_code) + ", Response: " + response.text)\n            return\n            \n        for line in response.iter_lines():\n            if line:\n                decoded_line = line.decode('utf-8', errors='ignore')\n                if decoded_line.startswith("data:"):\n                    try:\n                        event_data = json.loads(decoded_line[5:].strip())\n                        object_type = event_data.get("objectType")\n                        operation = event_data.get("operation")\n                        \n                        print("[+] Received event: Object=" + str(object_type) + ", Operation=" + str(operation))\n                        \n                        if object_type == "case" and operation == "Create":\n                            case_details = event_data.get("details", {})\n                            print("[!] New Case Created! Forwarding to Shuffle...")\n                            \n                            webhook_response = requests.post(SHUFFLE_WEBHOOK_URL, json=event_data, timeout=10)\n                            if webhook_response.status_code == 200:\n                                print("[+] Successfully forwarded case to Shuffle SOAR.")\n                            else:\n                                print("[-] Failed to forward. Status: " + str(webhook_response.status_code))\n                                \n                    except json.JSONDecodeError:\n                        continue\n                        \n    except Exception as e:\n        print("[-] Error in stream connection: " + str(e))\n\nif __name__ == "__main__":\n    while True:\n        listen_to_thehive_stream()\nEOF
+ 1186  python3 thehive_to_shuffle.py
+ 1187  curl -i -X POST \\n  -H 'Content-Type: application/json' \\n  --data '{"test":"E2E Case 001"}' \\n  'http://192.168.1.11:5001/api/v1/hooks/webhook_<WEBHOOK_ID>'
+ 1188  docker logs -f shuffle-backend 2>&1 | grep -Ei 'webhook|execution|hook|workflow|<WEBHOOK_ID>'
+ 1189  docker logs -f --since 1m shuffle-backend 2>&1 | grep -Ei 'Found ID|Running webhook|Execution:|Status:'
+ 1190  curl -i -X POST \\n  -H 'Content-Type: application/json' \\n  --data '{"test":"E2E Case 001"}' \\n  'http://192.168.1.11:5001/api/v1/hooks/webhook_<WEBHOOK_ID>'
+ 1191  docker logs --tail 100 thehive 2>&1 | grep -iE 'webhook|error|fail'
+ 1192  cat << 'EOF' > thehive_bridge.py\nimport requests\nimport time\n\nTHEHIVE_URL = "http://127.0.0.1:9000/api/v1"\nTHEHIVE_API_KEY = "<REDACTED>"\nSHUFFLE_WEBHOOK = "http://127.0.0.1:5001/api/v1/hooks/webhook_<WEBHOOK_ID>"\n\nheaders = {"Authorization": "Bearer " + THEHIVE_API_KEY, "Content-Type": "application/json"}\nseen = set()\n\nprint("[*] TheHive to Shuffle Bridge Started...")\nwhile True:\n    try:\n        res = requests.post(f"{THEHIVE_URL}/case/find", headers=headers, json={"query": [{"_name": "listCase"}, {"_name": "sort", "field": "-createdAt"}, {"_name": "page", "from": 0, "size": 5}]}, timeout=5)\n        if res.status_code == 200:\n            for c in res.json():\n                cid = c.get("_id")\n                if cid and cid not in seen:\n                    seen.add(cid)\n                    if len(seen) > 5:  # تخطي الحالات القديمة عند البدء\n                        print(f"[+] Sending new case to Shuffle: {c.get('title')}")\n                        requests.post(SHUFFLE_WEBHOOK, json=c, timeout=5)\n    except Exception as e:\n        pass\n    time.sleep(10)\nEOF\npython3 thehive_bridge.py
+ 1195  curl -i http://192.168.1.11:9001
+ 1196  docker exec -it cortex sh
+ 1197  cat /etc/cortex/application.conf | grep -i -A5 -B5 'apikey\|secret'
+ 1198  docker inspect cortex --format '{{json .Mounts}}'
+ 1199  ls -la /home/kali/resilient-soar/docker/testing/cortex/config
+ 1200  cat /home/kali/resilient-soar/docker/testing/cortex/config/secret.conf
+ 1201  docker exec -it cortex /bin/sh -c 'ls -la /opt/cortex'
+ 1202  docker exec -it cortex sh -c 'ls -la /opt/cortex/conf'
+ 1203  curl -s http://192.168.1.11:9001/api/user
+ 1204  docker exec -it cortex sh -c 'grep -Rni "apikey" /opt/cortex /etc/cortex 2>/dev/null | head -30'
+ 1205  curl -s -u 'resilient01' http://192.168.1.11:9001/api/user/current
+ 1206  docker logs cortex 2>&1 | grep -Ei 'http|server|port|listen' | tail -30
+ 1207  docker exec cortex sh -c 'cat /opt/cortex/conf/routes | grep -E "api|user|auth" | head -50'
+ 1208  curl -s -X POST \\n  -H 'Content-Type: application/json' \\n  -d '{"login":"resilient01","password":"YOUR_PASSWORD"}' \\n  http://192.168.1.11:9001/api/login
+ 1209  docker exec cortex sh -c 'grep -RniE "context|basePath|/cortex|play.http.router" /opt/cortex/conf /etc/cortex 2>/dev/null'
+ 1210  curl -s http://192.168.1.11:9001/cortex/api/health
+ 1211  curl -i http://192.168.1.11:9001/cortex/api/status
+ 1212  docker exec cortex sh -c 'grep -E "/api/(user|organization|auth)" /opt/cortex/conf/routes'
+ 1213  curl -s -u 'resilient01' http://192.168.1.11:9001/cortex/api/user/current
+ 1214  docker exec cortex sh -c 'grep -nE "elastic4play|index|organization|user" /etc/cortex/application.conf | head -30'
+ 1215  docker exec cortex sh -c 'cat /etc/cortex/index.conf'
+ 1216  docker exec cortex sh -c 'curl -s -u "elastic:$(sed -n "s/.*password = \"\(.*\)\"/\1/p" /etc/cortex/index.conf)" "http://elasticsearch:9200/cortex/_search" -H "Content-Type: application/json" -d '\''{"query":{"match":{"login":"resilient01"}},"_source":["_id","login","name"]}'\'''
+ 1217  docker exec cortex sh -c 'curl -s -u "elastic:$(sed -n "s/.*password = \"\(.*\)\"/\1/p" /etc/cortex/index.conf)" "http://elasticsearch:9200/_cat/indices?v"'
+ 1218  docker exec cortex sh -c 'curl -s -u "elastic:$(sed -n "s/.*password = \"\(.*\)\"/\1/p" /etc/cortex/index.conf)" "http://elasticsearch:9200/cortex_6/_search" -H "Content-Type: application/json" -d '\''{"query":{"match":{"login":"resilient01"}},"_source":["login","name"]}'\'''
+ 1219  docker exec cortex sh -c 'curl -s -u "elastic:$(sed -n "s/.*password = \"\(.*\)\"/\1/p" /etc/cortex/index.conf)" "http://elasticsearch:9200/cortex_6/_search?size=1" -H "Content-Type: application/json"'
+ 1220  curl -s http://192.168.1.11:9001/cortex/api/user
+ 1221  docker exec cortex sh -c 'curl -s -u "elastic:$(sed -n "s/.*password = \"\(.*\)\"/\1/p" /etc/cortex/index.conf)" "http://elasticsearch:9200/cortex_6/_search" -H "Content-Type: application/json" -d '\''{"query":{"query_string":{"query":"resilient01"}},"size":50}'\'''
+ 1222  curl -s \\n  -H "Authorization: Bearer <REDACTED>" \\n  http://192.168.1.11:9001/cortex/api/user/current
+ 1223  grep 'password' ~/resilient-soar/docker/testing/cortex/config/index.conf
+ 1224  ES_PASS=$(awk -F'"' '/password[[:space:]]*=/ {print $2}' ~/resilient-soar/docker/testing/cortex/config/index.conf); \\nCORTEX_KEY=$(curl -s -u "elastic:$ES_PASS" http://127.0.0.1:9200/cortex_6/_doc/resilient01 | jq -r '._source.key'); \\ncurl -s -H "Authorization: $CORTEX_KEY" http://192.168.1.11:9001/cortex/api/user/current
+ 1225  docker exec cortex sh -c "grep -RniE 'Authorization|X-.*Key|apikey|api.key|authByKey' /opt/cortex /etc/cortex 2>/dev/null | head -50"
+ 1226  docker exec cortex sh -c "jar tf /opt/cortex/lib/org.thehive-project.cortex-4.1.0-1-sans-externalized.jar | grep -Ei 'auth|key' | head -50"
+ 1227  docker exec cortex sh -c "javap -classpath /opt/cortex/lib/org.thehive-project.cortex-4.1.0-1-sans-externalized.jar -c org.thp.cortex.services.KeyAuthSrv | grep -Ei -A5 -B5 'Authorization|header|apikey|key'"
+ 1228  docker exec cortex sh -c "javap -classpath /opt/cortex/lib/org.thehive-project.cortex-4.1.0-1-sans-externalized.jar -c org.thp.cortex.services.KeyAuthSrv | sed -n '/authenticate(play.api.mvc.RequestHeader)/,/renewKey/p' | grep -Ei -A15 -B15 'getHeader|header|authorization|apikey|api-key|key'"
+ 1229  docker exec cortex sh -c "javap -classpath /opt/cortex/lib/* -c org.elastic4play.services.AuthSrv 2>/dev/null | grep -Ei -A20 -B10 'Authorization|X-.*Key|header|apikey|api-key'"
+ 1230  docker exec cortex sh -c 'curl -s -o /dev/null -w "%{http_code}\n" -H "Authorization: $(curl -s -u elastic:$(awk -F\" '\''/password[[:space:]]*=/ {print $2}'\'' /etc/cortex/index.conf) http://elasticsearch:9200/cortex_6/_doc/resilient01 | jq -r '\''._source.key'\'')" http://127.0.0.1:9001/cortex/api/user/current'
+ 1231  docker exec cortex sh -c 'KEY=$(curl -s -u "elastic:$(awk -F\" '\''/password[[:space:]]*=/ {print $2}'\'' /etc/cortex/index.conf)" http://elasticsearch:9200/cortex_6/_doc/resilient01 | sed -n '\''s/.*"key":"\([^"]*\)".*/\1/p'\''); curl -s -o /dev/null -w "%{http_code}\n" -H "Authorization: $KEY" http://127.0.0.1:9001/cortex/api/user/current'
+ 1232  docker exec cortex sh -c 'curl -s -X POST -u resilient01 http://127.0.0.1:9001/cortex/api/user/resilient01/key/renew'
+ 1233  docker exec cortex sh -c 'grep -nE "elastic|search|host|index" /etc/cortex/application.conf /etc/cortex/index.conf | head -30'
+ 1234  docker exec cortex sh -c 'curl -s -u "elastic:$(awk -F\" '\''/password[[:space:]]*=/ {print $2}'\'' /etc/cortex/index.conf)" http://elasticsearch:9200/cortex_6/_doc/resilient01 | sed -n '\''s/.*"key":"\([^"]*\)".*/KEY_LENGTH=\1/p'\'' | awk -F= '\''{print length($2)}'\'''
+ 1235  docker exec cortex sh -c 'for j in /opt/cortex/lib/*.jar; do jar tf "$j" 2>/dev/null | grep -q "org/elastic4play/services/AuthSrv.class" && echo "$j"; done'
+ 1236  docker exec cortex sh -c 'javap -classpath /opt/cortex/lib/elastic4play.elastic4play-4.1.0-1.jar -c -p org.elastic4play.services.AuthSrv | sed -n "/authenticate(play.api.mvc.RequestHeader)/,/renewKey/p"'
+ 1237  docker exec cortex sh -c 'strings /opt/cortex/lib/elastic4play.elastic4play-4.1.0-1.jar | grep -Ei "authorization|x-api|api-key|apikey|bearer" | head -30'
+ 1238  docker exec cortex sh -c 'KEY=$(curl -s -u "elastic:$(awk -F\" '\''/password[[:space:]]*=/ {print $2}'\'' /etc/cortex/index.conf)" http://elasticsearch:9200/cortex_6/_doc/resilient01 | sed -n '\''s/.*"key":"\([^"]*\)".*/\1/p'\''); for H in "Authorization: $KEY" "Authorization: Bearer <REDACTED>" "X-Api-Key: <REDACTED>"; do echo -n "$H -> "; curl -s -o /dev/null -w "%{http_code}\n" -H "$H" http://127.0.0.1:9001/cortex/api/user/current; done'
+ 1239  cd ~/resilient-soar\ndocker compose -f docker/testing/docker-compose.yml ps
+ 1240  docker compose -f docker/testing/docker-compose.yml ps
+ 1241  cd ~/resilient-soar\ndocker compose -f docker/testing/docker-compose.yml ps
+ 1242  docker compose -f docker/testing/docker-compose.yml ps
+ 1243  cd ~/resilient-soar\n\ndocker compose -f docker/testing/docker-compose.yml ps\ndocker compose -f docker/testing/docker-compose.yml logs --tail=50 cassandra elasticsearch
+ 1244  docker exec cassandra cqlsh -e "DESCRIBE KEYSPACES;"
+ 1245  docker exec elasticsearch curl -s http://localhost:9200
+ 1246  docker exec elasticsearch curl -s -u 'elastic:<ELASTIC_PASSWORD>' http://localhost:9200
+ 1247  cd ~/resilient-soar && grep -RniE 'ELASTIC_PASSWORD|ELASTICSEARCH_PASSWORD|elastic.*password|password.*elastic' docker/testing/.env docker/testing/docker-compose.yml 2>/dev/null
+ 1248  docker exec elasticsearch curl -s -u 'elastic:<ELASTIC_PASSWORD>' http://localhost:9200
+ 1249  docker compose -f docker/testing/docker-compose.yml ps
+ 1250  curl -s http://127.0.0.1:9001/api/status
+ 1251  curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:9001/api/v1/user/current
+ 1252  curl -s -H "Authorization: Bearer <REDACTED> -E '^CORTEX.*API|^cortex.*api' docker/testing/.env | cut -d= -f2- | tr -d "' ")'" http://127.0.0.1:9001/api/v1/analyzer
+ 1253  docker exec cortex sh -c 'grep -RniE "api/v1|route|analyzer" /opt/cortex/conf /opt/cortex 2>/dev/null | head -50'
+ 1254  curl -s -H "Authorization: Bearer <REDACTED> -E '^cortex.*api|^CORTEX.*API' docker/testing/.env | cut -d= -f2- | tr -d "' ")" http://127.0.0.1:9001/api/analyzer
+ 1255  curl -i http://127.0.0.1:9001/api/analyzer
+ 1256  docker exec cortex sh -c 'grep -RniE "context|base.?path|http.*path|server.*path" /opt/cortex/conf/application.conf /opt/cortex/conf/reference.conf 2>/dev/null'
+ 1257  docker exec cortex sh -c 'nl -ba /opt/cortex/conf/routes | head -80'
+ 1258  docker exec cortex sh -c 'curl -i http://127.0.0.1:9001/api/health'
+ 1259  docker exec cortex sh -c 'ps aux | grep -v grep | grep -E "cortex|java"'
+ 1260  docker exec cortex sh -c 'grep -nE "http|server|context|routes|9001|9000" /tmp/cortex-*.conf 2>/dev/null | head -50'
+ 1261  docker exec cortex sh -c 'cat /proc/net/tcp | awk "NR>1 {print \$2,\$4}" | grep -Ei "2329|0x2329"'
+ 1262  docker exec cortex sh -c 'ss -lntp 2>/dev/null || netstat -lntp 2>/dev/null'
+ 1263  curl -i http://127.0.0.1:9001/
+ 1264  docker exec cortex sh -c 'grep -RniE "routes|router|context|basePath|rootPath" /tmp/cortex-*.conf /opt/cortex/conf /opt/cortex 2>/dev/null | head -100'
+ 1265  docker exec cortex sh -c 'cat /opt/cortex/conf/routes | head -40'
+ 1266  docker exec cortex sh -c 'sed -n "1,140p" /tmp/cortex-*.conf'
+ 1267  docker exec cortex sh -c 'grep -nE "play\.|http|server|context|router|routes|9001" /etc/cortex/application.conf'
+ 1268  curl -i http://127.0.0.1:9001/cortex/api/health
+ 1269  curl -i http://127.0.0.1:9001/cortex/api/analyzer
+ 1270  curl -i -H "Authorization: Bearer <REDACTED>" http://127.0.0.1:9001/cortex/api/analyzer
+ 1271  curl -i -H "Authorization: Bearer <REDACTED>" http://127.0.0.1:9001/cortex/api/analyzer
+ 1272  curl -s -H "Authorization: Bearer <REDACTED>" "http://127.0.0.1:9001/cortex/api/analyzer" | grep -o '"analyzerDefinitionId":"[^"]*"'
+ 1273  docker exec cortex sh -c 'curl -s https://catalogs.download.strangebee.com/latest/json/analyzers.json | grep -o "\"analyzerDefinitionId\":\"IPinfo_1_3\"" | head'
+ 1274  docker exec cortex sh -c 'curl -s https://catalogs.download.strangebee.com/latest/json/analyzers.json | grep -oiE ".{0,120}IPinfo.{0,120}" | head -20'
+ 1275  docker exec cortex sh -c 'curl -s https://catalogs.download.strangebee.com/latest/json/analyzers.json | grep -B8 -A12 "\"name\": \"IPinfo_"'
+ 1276  grep -Rni "IPinfo_1_3" ~/resilient-soar 2>/dev/null | head -30
+ 1277  find ~/resilient-soar -type f \( -iname '*ipinfo*' -o -iname '*analyzer*' \) 2>/dev/null | head -50
+ 1278  sed -n '1,240p' ~/resilient-soar/docker/testing/cortex/neurons/analyzers/IPinfo/ipinfo_analyzer.py
+ 1279  cat ~/resilient-soar/docker/testing/cortex/neurons/analyzers/IPinfo/IPinfo_Details.json
+ 1280  cd ~/resilient-soar && git -C docker/testing/cortex/neurons/analyzers remote -v
+ 1281  git -C ~/resilient-soar/docker/testing/cortex/neurons/analyzers log --all --oneline -- IPinfo | head -30
+ 1282  git -C ~/resilient-soar/docker/testing/cortex/neurons log --all --oneline -- IPinfo | head -30
+ 1283  docker exec cortex sh -c 'curl -s -o /dev/null -w "%{http_code}\n" -H "Authorization: Bearer <REDACTED>" http://localhost:9001/cortex/api/analyzer'
+ 1284  grep -Rni "IPinfo_1_3" ~/resilient-soar 2>/dev/null | head -30
+ 1285  grep -RniE '"name"[[:space:]]*:[[:space:]]*"IPinfo|IPinfo_1_3|IPinfo.*1\.3' ~/resilient-soar/docker/testing/cortex/neurons 2>/dev/null | head -50
+ 1286  git -C ~/resilient-soar/docker/testing/cortex/neurons rev-parse --short HEAD
+ 1287  git -C ~/resilient-soar/docker/testing/cortex/neurons describe --tags --always --dirty
+ 1288  git -C ~/resilient-soar/docker/testing/cortex/neurons show 0293639:analyzers/IPinfo/IPinfo_Details.json 2>/dev/null
+ 1289  git -C ~/resilient-soar/docker/testing/cortex/neurons ls-tree -r --name-only 0293639 | grep -i 'IPinfo'
+ 1290  git -C ~/resilient-soar/docker/testing/cortex/neurons status --short
+ 1291  curl -s https://catalogs.download.strangebee.com/latest/json/analyzers.json | grep -i -B5 -A20 'IPinfo'
+ 1292  grep -RniE 'IPinfo_1_3|IPinfo_Details|Run analyzer' ~/resilient-soar --exclude='*.log' 2>/dev/null | head -80
+ 1293  docker exec cortex sh -c 'ls -l /opt/cortexneurons/analyzers/IPinfo/'
+ 1294  cp ~/resilient-soar/docker/testing/cortex/neurons/analyzers/IPinfo/IPinfo_Details.json ~/resilient-soar/docker/testing/cortex/neurons/analyzers/IPinfo/IPinfo_1_3.json && sed -i 's/"name": "IPinfo_Details"/"name": "IPinfo_1_3"/' ~/resilient-soar/docker/testing/cortex/neurons/analyzers/IPinfo/IPinfo_1_3.json
+ 1295  docker logs --since 5m cortex 2>&1 | grep -Ei 'IPinfo|analyzer|reload|catalog' | tail -40
+ 1296  docker restart cortex
+ 1297  curl -s -H "Authorization: Bearer <REDACTED>" \\n  http://127.0.0.1:9001/cortex/api/analyzer | grep -o '"name":"[^"]*"'
+ 1298  curl -s -H "Authorization: Bearer <REDACTED>" \\n  http://127.0.0.1:9001/cortex/api/analyzer | grep -o '"name":"[^"]*"'
+ 1299  read -rsp 'Cortex API key: ' CORTEX_API_KEY; echo; curl -s -H "Authorization: Bearer <REDACTED>" http://127.0.0.1:9001/cortex/api/analyzer | grep -o '"name":"[^"]*"'
+ 1300  CORTEX_API_KEY='<REDACTED>' && curl -s -H "Authorization: Bearer <REDACTED>" http://127.0.0.1:9001/cortex/api/analyzer | grep -o '"name":"[^"]*"'
+ 1301  docker exec cortex sh -c 'grep -n "analyzer" /etc/cortex/application.conf'
+ 1302  docker exec cortex sh -c 'cat /opt/cortexneurons/analyzers/IPinfo/IPinfo_1_3.json'
+ 1303  docker logs cortex 2>&1 | tail -100
+ 1304  docker logs cortex 2>&1 | grep -in "ipinfo"
+ 1305  docker exec cortex sh -c 'ls -la /opt/cortexneurons/analyzers/IPinfo/'
+ 1306  docker logs cortex 2>&1 | grep -inE "skip|ignor|invalid|malformed|duplicate"
+ 1307  docker logs cortex 2>&1 | grep -inE "Exception|exception|1_3|1\.3"
+ 1308  docker exec cortex sh -c 'find /opt/cortexneurons -iname "*.json" -newer /opt/cortexneurons/analyzers/IPinfo/IPinfo_Details.json'
+ 1309  curl -s -H "Authorization: Bearer <REDACTED>" -X POST \\n  -H "Content-Type: application/json" \\n  -d '{"query":{},"range":"all"}' \\n  http://127.0.0.1:9001/cortex/api/analyzer/_search | python3 -m json.tool | head -60
+ 1310  curl -s -H "Authorization: Bearer <REDACTED>" \\n  http://127.0.0.1:9001/cortex/api/analyzerdefinition | python3 -m json.tool | grep -i -B3 -A2 "ipinfo"
+ 1311  curl -s -X POST \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "name": "IPinfo_1_3",\n    "configuration": {\n      "api_key": "<REDACTED>"\n    },\n    "jobCache": 10,\n    "jobTimeout": 30\n  }' \\n  http://127.0.0.1:9001/cortex/api/organization/analyzer/IPinfo_1_3_1_0
+ 1312  curl -s -H "Authorization: Bearer <REDACTED>" \\n  http://127.0.0.1:9001/cortex/api/analyzer | python3 -m json.tool | grep -E '"name"|"id"'
+ 1313  curl -s -X POST \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"data":"8.8.8.8","dataType":"ip","tlp":2}' \\n  http://127.0.0.1:9001/cortex/api/analyzer/IPinfo_1_3/run | python3 -m json.tool
+ 1314  curl -s -X POST \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"data":"8.8.8.8","dataType":"ip","tlp":2}' \\n  http://127.0.0.1:9001/cortex/api/analyzer/c4538ef31090f3530d1f6e2b333ad580/run | python3 -m json.tool
+ 1315  curl -s -H "Authorization: Bearer <REDACTED>" \\n  http://127.0.0.1:9001/cortex/api/job/0CVgZqABbz4nfHUDv31- | python3 -m json.tool
+ 1316  cat ~/resilient-soar/docker/testing/cortex/neurons/analyzers/IPinfo/requirements.txt
+ 1317  docker exec cortex sh -c 'which python3 && python3 -m pip show requests 2>&1 | head -5'
+ 1318  docker exec cortex sh -c 'python3 -m pip show cortexutils 2>&1 | head -5'
+ 1319  docker exec cortex sh -c 'whoami && id'
+ 1320  docker exec -u root cortex sh -c 'pip install requests 2>&1 | tail -20'
+ 1321  docker exec -u root cortex sh -c 'apt-get update -qq && apt-get install -y python3-requests 2>&1 | tail -20'
+ 1322  docker exec cortex sh -c 'python3 -c "import requests; print(requests.__version__)"'
+ 1323  curl -s -X POST \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"data":"8.8.8.8","dataType":"ip","tlp":2}' \\n  http://127.0.0.1:9001/cortex/api/analyzer/c4538ef31090f3530d1f6e2b333ad580/run | python3 -m json.tool
+ 1324  curl -s -H "Authorization: Bearer <REDACTED>" \\n  http://127.0.0.1:9001/cortex/api/job/0SVkZqABbz4nfHUDE33G | python3 -m json.tool
+ 1325  curl -s -X PATCH \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"configuration":{"api_key":"<REDACTED>"}}' \\n  http://127.0.0.1:9001/cortex/api/organization/analyzer/c4538ef31090f3530d1f6e2b333ad580
+ 1326  docker exec cortex sh -c 'grep -n "organization/analyzer" /opt/cortex/conf/routes'
+ 1327  curl -s -X POST \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{\n    "name": "IPinfo_1_3",\n    "configuration": {\n      "api_key": "<REDACTED>"\n    },\n    "jobCache": 10,\n    "jobTimeout": 30\n  }' \\n  http://127.0.0.1:9001/cortex/api/organization/analyzer/IPinfo_1_3_1_0
+ 1328  docker exec cortex sh -c 'grep -n "analyzer/:" /opt/cortex/conf/routes'
+ 1329  curl -s -X PATCH \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"configuration":{"api_key":"<REDACTED>"}}' \\n  http://127.0.0.1:9001/cortex/api/analyzer/c4538ef31090f3530d1f6e2b333ad580
+ 1330  curl -s -X PATCH \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"configuration":{"api_key":"<REDACTED>"}}' \\n  http://127.0.0.1:9001/cortex/api/analyzer/c4538ef31090f3530d1f6e2b333ad580
+ 1331  curl -s -X POST \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"data":"8.8.8.8","dataType":"ip","tlp":2}' \\n  http://127.0.0.1:9001/cortex/api/analyzer/c4538ef31090f3530d1f6e2b333ad580/run
+ 1332  curl -s -H "Authorization: Bearer <REDACTED>" \\n  http://127.0.0.1:9001/cortex/api/job/0iVqZqABbz4nfHUDE308 | python3 -m json.tool
+ 1333  docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}' | grep -Ei 'orborus|shuffle'
+ 1334  docker exec cortex_1-1-0.1.pjog6es9w5b3x52we1ncf10f sh -c 'grep -Rni "post_run_analyzer" / 2>/dev/null | head -20'
+ 1335  docker ps --filter 'name=cortex_1-' --format '{{.Names}}'
+ 1336  docker exec cortex_1-1-0.1.pjog6es9w5b3x52wew1ncf10f sh -c 'grep -Rni "post_run_analyzer" / 2>/dev/null | head -20'
+ 1337  docker exec cortex_1-1-0.1.pjog6es9w5b3x52wew1ncf10f sh -c 'find / -type f \( -name "*.json" -o -name "*.yaml" -o -name "*.yml" \) 2>/dev/null | grep -Ei "app|action|cortex" | head -50'
+ 1338  docker ps -a --format "table {{.Names}}\t{{.Image}}\t{{.Status}}" | grep -i orbo
+ 1339  docker logs shuffle-orborus --since 20m 2>&1 | grep -iE "cortex|post_run_analyzer|function.*doesn't exist|docker image"
+ 1340  docker logs shuffle-orborus --tail 50
+ 1341  docker service logs shuffle-workers 2>&1 --since 20m | grep 193607da-6838-4c0b-a0a8-affac577bc86
+ 1342  docker ps -a | grep cortex_1-1-0
+ 1343  docker logs cortex_1-1-0.1.pjog6es9w5b3x52wew1ncf10f --tail 60
+ 1344  docker exec cortex_1-1-0.1.pjog6es9w5b3x52wew1ncf10f sh -c 'cat /app/app.py 2>/dev/null | grep -n "^def \|action_name\|elif action" | head -60'
+ 1345  docker exec cortex_1-1-0.1.pjog6es9w5b3x52wew1ncf10f find / -iname "*.py" 2>/dev/null | grep -vi "/usr/lib\|/usr/local/lib"
+ 1346  docker exec cortex_1-1-0.1.pjog6es9w5b3x52wew1ncf10f cat /app/app.py
+ 1347  cd ~/resilient-soar/docker/testing && \\ndocker compose up -d && \\ncd ~/shuffle && \\ndocker compose up -d && \\necho "===== ALL STACKS STARTED =====" && \\ndocker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
+ 1348  docker logs --tail 80 elasticsearch
+ 1349  docker ps --format 'table {{.Names}}\t{{.Status}}' | grep -E 'elasticsearch|cassandra|cortex|thehive|nginx'
+ 1350  curl -s -H "Authorization: Bearer <REDACTED>" \\n  -X POST -H "Content-Type: application/json" \\n  -d '{"query":{"_field":"analyzerId","_value":"c4538ef31090f3530d1f6e2b333ad580"},"range":"0-5","sort":[{"createdAt":"desc"}]}' \\n  http://127.0.0.1:9001/cortex/api/job/_search | python3 -m json.tool
+ 1354  curl -s -H "Authorization: Bearer <REDACTED>" \\n  -X POST -H "Content-Type: application/json" \\n  -d '{"query":{"_field":"analyzerId","_value":"c4538ef31090f3530d1f6e2b333ad580"},"range":"0-5","sort":[{"createdAt":"desc"}]}' \\n  http://127.0.0.1:9001/cortex/api/job/_search | python3 -m json.tool
+ 1355  curl -s -H "Authorization: Bearer <REDACTED>" \\n  http://127.0.0.1:9001/cortex/api/analyzer | python3 -m json.tool | grep -E '"name"|"id"'
+ 1356  docker exec cortex sh -c 'ls -la /opt/cortexneurons/analyzers/IPinfo/'
+ 1357  docker exec cortex sh -c 'python3 -m pip show requests 2>&1 | head -3'
+ 1358  curl -s -H "Authorization: Bearer <REDACTED>" \\n  http://127.0.0.1:9001/cortex/api/job/7c2XZqABtxQDluIdP1zG/report | python3 -m json.tool
+ 1359  curl -s -H "Authorization: Bearer <REDACTED>" \\n  -X POST -H "Content-Type: application/json" \\n  -d '{"range":"0-10","sort":[{"createdAt":"desc"}]}' \\n  http://127.0.0.1:9001/cortex/api/job/_search | python3 -m json.tool | grep -E '"id"|"status"|"workerName"|"data"'
+ 1360  curl -s -X GET "http://192.168.1.11:9001/cortex/api/job?range=0-5&sort=-startDate" -H "Authorization: Bearer <REDACTED>" | jq
+ 1361  curl -s -X GET "http://192.168.1.11:9001/cortex/api/job/0iVqZqABbz4nfHUDE308/report" -H "Authorization: Bearer <REDACTED>" | jq
+ 1362  curl -s -X POST "http://192.168.1.11:9000/api/v1/query" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"query":[{"_name":"listCase"},{"_name":"sort","_fields":[{"_createdAt":"desc"}]}]}' | jq
+ 1363  curl -s -X GET "http://192.168.1.11:9000/api/v1/case" -H "Authorization: Bearer <REDACTED>" | jq
+ 1364  curl -s -X GET "http://192.168.1.11:9000/api/status" | jq
+ 1365  curl -s -X GET "http://192.168.1.11:9000/thehive/api/status" | jq
+ 1366  curl -s -X GET "http://192.168.1.11:9000/thehive/api/v1/case" -H "Authorization: Bearer <REDACTED>" | jq
+ 1367  curl -s -X POST "http://192.168.1.11:9000/thehive/api/v1/query" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "Content-Type: application/json" \\n  -d '{"query":[{"_name":"listCase"},{"_name":"sort","_fields":[{"_createdAt":"desc"}]}]}' | jq
+ 1368  curl -s -X GET "http://192.168.1.11:9000/thehive/api/v1/user/current" -H "Authorization: Bearer <REDACTED>" | jq
+ 1369  curl -s -X POST "http://192.168.1.11:9000/thehive/api/v1/query" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -d '{"query":[{"_name":"listCase"},{"_name":"sort","_fields":[{"_createdAt":"desc"}]}]}' | jq
+ 1370  curl -s -X GET "http://192.168.1.11:9000/thehive/api/v1/case/~122884224/observables" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "X-Organisation: Resilient" | jq
+ 1371  curl -s -X POST "http://192.168.1.11:9000/thehive/api/v1/query" \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H "X-Organisation: Resilient" \\n  -H "Content-Type: application/json" \\n  -d '{"query":[{"_name":"getCase","idOrName":"~122884224"},{"_name":"observables"}]}' | jq
+ 1372  curl -s -X GET "http://192.168.1.11:9001/cortex/api/job?range=0-3&sort=-startDate" -H "Authorization: Bearer <REDACTED>" | jq '.[] | {id, data, workerName, startDate}'
+ 1373  curl -s -X GET "http://192.168.1.11:9001/cortex/api/job?range=0-20" -H "Authorization: Bearer <REDACTED>" | jq 'sort_by(.startDate) | reverse | .[0:5] | .[] | {id, data, workerName, startDate}'
+ 1374  curl -s -X GET "http://192.168.1.11:3001/api/v1/workflows/c00bfc84-6f7f-4d79-800f-4fd84662a157/executions/466e1a3d-8795-4fcf-b92f-5fd8eaa53d82" \\n  -H "Authorization: Bearer <REDACTED>" | jq
+ 1375  curl -s -X GET "http://192.168.1.11:3001/api/v1/streams/results/466e1a3d-8795-4fcf-b92f-5fd8eaa53d82" \\n  -H "Authorization: Bearer <REDACTED>" | jq
+ 1376  curl -s -X GET "http://192.168.1.11:3001/api/v1/workflows/c00bfc84-6f7f-4d79-800f-4fd84662a157/executions?authorization=c42bad07-4055-49bb-a5bd-f63fc32c7b3c" | jq '.[0]'
+ 1377  curl -s -X GET "http://192.168.1.11:3001/api/v1/workflows/c00bfc84-6f7f-4d79-800f-4fd84662a157/executions?authorization=c42bad07-4055-49bb-a5bd-f63fc32c7b3c" | jq
+ 1378  curl -s -X GET "http://192.168.1.11:3001/api/v1/workflows/c00bfc84-6f7f-4d79-800f-4fd84662a157/executions" \\n  -H "Authorization: c42bad07-4055-49bb-a5bd-f63fc32c7b3c" | jq
+ 1379  cd ~/resilient-soar
+ 1380  docker ps --format 'table {{.Names}}\t{{.Status}}' | grep -E 'cortex|thehive|shuffle'
+ 1381  docker ps --format 'table {{.Names}}\t{{.Status}}' | grep -E '^cortex |^thehive '
+ 1382  read -s THEHIVE_API_KEY; echo; curl -s -X POST 'http://192.168.1.11:9000/api/v1/query' -H "Authorization: Bearer <REDACTED>" -H 'X-Organisation: Resilient' -H 'Content-Type: application/json' --data '{"query":[{"_name":"listObservable"},{"_name":"filter","_eq":{"_field":"data","_value":"8.8.8.8"}}]}'
+ 1383  curl -sS -o /tmp/thehive-query.out -w 'HTTP %{http_code}\n' \\n  -X POST 'http://192.168.1.11:9000/api/v1/query' \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H 'X-Organisation: Resilient' \\n  -H 'Content-Type: application/json' \\n  --data '{"query":[{"_name":"listObservable"},{"_name":"filter","_eq":{"_field":"data","_value":"8.8.8.8"}}]}'
+ 1384  curl -sS -o /tmp/thehive-query.out -w 'HTTP %{http_code}\n' \\n  -X POST 'http://192.168.1.11:9000/thehive/api/v1/query' \\n  -H "Authorization: Bearer <REDACTED>" \\n  -H 'X-Organisation: Resilient' \\n  -H 'Content-Type: application/json' \\n  --data '{"query":[{"_name":"listObservable"},{"_name":"filter","_eq":{"_field":"data","_value":"8.8.8.8"}}]}'
+ 1385  read -s THEHIVE_API_KEY; echo; curl -sS -o /tmp/thehive-query.out -w 'HTTP %{http_code}\n' -X POST 'http://192.168.1.11:9000/thehive/api/v1/query' -H "Authorization: Bearer <REDACTED>" -H 'X-Organisation: Resilient' -H 'Content-Type: application/json' --data '{"query":[{"_name":"listObservable"},{"_name":"filter","_eq":{"_field":"data","_value":"8.8.8.8"}}]}'
+ 1387  docker logs shuffle-backend --tail 50 -f
+ 1388  docker exec -it shuffle-backend cat /app/shuffle-database/workflows/... 2>/dev/null || docker logs shuffle-backend --tail 100
+ 1389  curl -X POST -H "Content-Type: application/json" -d '{"action": "approve"}' http://192.168.1.11:3001/api/v1/hook/رابط_الـ_webhook_بتاعك
+ 1390  curl -X POST -H "Content-Type: application/json" -d '{"action": "approve"}' http://192.168.1.11:3001/api/v1/hooks/webhook_<WEBHOOK_ID>
+ 1391  curl -X GET http://192.168.1.11:3001/api/v1/executions/cc9f4155-0032-4ba4-90b7-6d32417dca52 -H "Authorization: Bearer <REDACTED>"
+ 1394  python3 soar_webhook.py
+ 1395  curl -X POST -H "Content-Type: application/json" -d '{"action": "approve"}' http://127.0.0.1:5000/api/v1/webhook
+ 1396  python3 soar_webhook.py
+ 1397* curl -X POST -H "Content-Type: application/json" -d '{"action": "approve"}' http://127.0.0.1:5000/api/v1/webhook
+ 1399* python3 soar_webhook.py
+ 1400* fuser -k 5000/tcp
+ 1401* python3 soar_webhook.py
+ 1403* fuser -k 5000/tcp
+ 1404* python3 soar_webhook.py
+ 1405  curl -X POST -H "Content-Type: application/json" -d '{"action": "approve", "case_id": "~1001"}' http://127.0.0.1:5000/api/v1/webhook
+ 1406  curl -X POST -H "Content-Type: application/json" -d '{"action": "reject", "case_id": "~1001"}' http://127.0.0.1:5000/api/v1/webhook
+ 1407  curl -X POST -H "Content-Type: application/json" -d '{"action": "approve", "case_id": "~81928240"}' http://127.0.0.1:5000/api/v1/webhook
+ 1409  curl -X POST -H "Content-Type: application/json" -d '{"action": "approve", "case_id": "~81928240"}' http://127.0.0.1:5000/api/v1/webhook
+ 1410  cd ~/resilient-soar\nnano README.md
+ 1412  cd ~/resilient-soar\ncat << 'EOF' > README.md\n# Resilient SOC Case File #003 — Operation Autopilot (SOAR Integration)\n\n## 1. Executive Summary & Context\nBuilding directly upon **Case File #001** and **Case File #002 (Operation Nightfall)**, this project introduces an orchestration and automated response layer to transform standard SOC monitoring into an automated, proactive incident response pipeline. While detection and triage form the foundation, **Operation Autopilot** bridges the gap between identification and containment using Shuffle SOAR, TheHive, Cortex, and a custom Flask webhook handling Human-in-the-Loop (HITL) decisions.\n\n---\n\n## 2. Core Architecture & Topology\nThe environment is structured to separate detection, case management, enrichment, and orchestration across integrated nodes:\n\n* **Host / OS:** Kali Linux (Host environment)\n* **TheHive (v5.7.5 / v5.2):** Case & Incident Management (`http://192.168.1.11:9000`)\n* **Cortex (v4.1.0 / v3.1.7):** Automated IOC Enrichment (`http://192.168.1.11:9001/cortex`)\n* **Shuffle SOAR:** Playbook Automation & Orchestration (`http://192.168.1.11:3001`)\n* **Splunk:** Detection Engineering & Alert Trigger Source\n* **Custom Flask Webhook Integration Layer (`soar_webhook.py`):** Acts as the bridge processing `approve`/`reject` actions and programmatically pushing structured audit logs to TheHive API (`POST /api/v1/case/{case_id}/log`).\n\n---\n\n## 3. End-to-End (E2E) Workflow Pipeline\n1. **Detection:** Splunk triggers an alert based on correlation rules (e.g., archive activity followed by log clearance).\n2. **Orchestration:** Shuffle receives the Webhook payload from Splunk.\n3. **Case Creation:** Shuffle automatically initializes a new case inside TheHive via API (HTTP 201).\n4. **Dynamic Extraction:** TheHive extracts observables dynamically (e.g., IP address extraction: `$thehive_2.body.0.data`).\n5. **Enrichment:** Cortex receives the observable and triggers analyzers for deep telemetry context.\n6. **Human-in-the-Loop (HITL):** An alert notification is dispatched to the analyst. **Blind automation is avoided** on critical actions; human authorization is mandatory.\n7. **Webhook & API Synchronization:** The custom Flask server (`soar_webhook.py`) parses the decision (`approve` / `reject`) and updates the case timeline and audit logs programmatically inside TheHive.\n\n---\n\n## 4. Implementation Artifacts\n\n### A. Custom Flask Webhook Server (`soar_webhook.py`)\n```python\nfrom flask import Flask, request, jsonify\nimport requests\n\napp = Flask(__name__)\n\nTHEHIVE_URL = "[http://192.168.1.11:9000](http://192.168.1.11:9000)"\nTHEHIVE_API_KEY = "<REDACTED>"\n\n@app.route('/api/v1/webhook', methods=['POST'])\ndef receive_webhook():\n    data = request.json\n    action = data.get('action')\n    case_id = data.get('case_id')\n    \n    print(f"[+] Received Action: {action} for Case ID: {case_id}")\n    \n    if action == 'approve':\n        logs = ["Enrichment Completed", "Analyst Approved", "Containment Simulated"]\n    elif action == 'reject':\n        logs = ["Enrichment Completed", "Analyst Rejected", "Escalated"]\n    else:\n        return jsonify({"error": "Invalid action"}), 400\n\n    if case_id:\n        headers = {\n            "Authorization": f"Bearer {THEHIVE_API_KEY}",\n            "Content-Type": "application/json"\n        }\n        for log in logs:\n            payload = {"message": log}\n            try:\n                requests.post(f"{THEHIVE_URL}/api/v1/case/{case_id}/log", json=payload, headers=headers)\n            except Exception as e:\n                print(f"[-] Failed to send log to TheHive: {e}")\n\n    return jsonify({"status": "success", "received_action": action, "logs": logs}), 200\n\nif __name__ == '__main__':\n    app.run(host='0.0.0.0', port=5000)
+ 1414  cd ~/resilient-soar\ncat << 'EOF' > README.md\n# Resilient SOC Case File #003 — Operation Autopilot (SOAR Integration)\n\n## 1. Executive Summary & Context\nBuilding directly upon **Case File #001** and **Case File #002 (Operation Nightfall)**, this project introduces an orchestration and automated response layer to transform standard SOC monitoring into an automated, proactive incident response pipeline. While detection and triage form the foundation, **Operation Autopilot** bridges the gap between identification and containment using Shuffle SOAR, TheHive, Cortex, and a custom Flask webhook handling Human-in-the-Loop (HITL) decisions.\n\n---\n\n## 2. Core Architecture & Topology\nThe environment is structured to separate detection, case management, enrichment, and orchestration across integrated nodes:\n\n* **Host / OS:** Kali Linux (Host environment)\n* **TheHive (v5.7.5 / v5.2):** Case & Incident Management (`http://192.168.1.11:9000`)\n* **Cortex (v4.1.0 / v3.1.7):** Automated IOC Enrichment (`http://192.168.1.11:9001/cortex`)\n* **Shuffle SOAR:** Playbook Automation & Orchestration (`http://192.168.1.11:3001`)\n* **Splunk:** Detection Engineering & Alert Trigger Source\n* **Custom Flask Webhook Integration Layer (`soar_webhook.py`):** Acts as the bridge processing `approve`/`reject` actions and programmatically pushing structured audit logs to TheHive API (`POST /api/v1/case/{case_id}/log`).\n\n---\n\n## 3. End-to-End (E2E) Workflow Pipeline\n1. **Detection:** Splunk triggers an alert based on correlation rules (e.g., archive activity followed by log clearance).\n2. **Orchestration:** Shuffle receives the Webhook payload from Splunk.\n3. **Case Creation:** Shuffle automatically initializes a new case inside TheHive via API (HTTP 201).\n4. **Dynamic Extraction:** TheHive extracts observables dynamically (e.g., IP address extraction: `$thehive_2.body.0.data`).\n5. **Enrichment:** Cortex receives the observable and triggers analyzers for deep telemetry context.\n6. **Human-in-the-Loop (HITL):** An alert notification is dispatched to the analyst. **Blind automation is avoided** on critical actions; human authorization is mandatory.\n7. **Webhook & API Synchronization:** The custom Flask server (`soar_webhook.py`) parses the decision (`approve` / `reject`) and updates the case timeline and audit logs programmatically inside TheHive.\n\n---\n\n## 4. Implementation Artifacts\n\n### A. Custom Flask Webhook Server (`soar_webhook.py`)\n```python\nfrom flask import Flask, request, jsonify\nimport requests\n\napp = Flask(__name__)\n\nTHEHIVE_URL = "[http://192.168.1.11:9000](http://192.168.1.11:9000)"\nTHEHIVE_API_KEY = "<REDACTED>"\n\n@app.route('/api/v1/webhook', methods=['POST'])\ndef receive_webhook():\n    data = request.json\n    action = data.get('action')\n    case_id = data.get('case_id')\n    \n    print(f"[+] Received Action: {action} for Case ID: {case_id}")\n    \n    if action == 'approve':\n        logs = ["Enrichment Completed", "Analyst Approved", "Containment Simulated"]\n    elif action == 'reject':\n        logs = ["Enrichment Completed", "Analyst Rejected", "Escalated"]\n    else:\n        return jsonify({"error": "Invalid action"}), 400\n\n    if case_id:\n        headers = {\n            "Authorization": f"Bearer {THEHIVE_API_KEY}",\n            "Content-Type": "application/json"\n        }\n        for log in logs:\n            payload = {"message": log}\n            try:\n                requests.post(f"{THEHIVE_URL}/api/v1/case/{case_id}/log", json=payload, headers=headers)\n            except Exception as e:\n                print(f"[-] Failed to send log to TheHive: {e}")\n\n    return jsonify({"status": "success", "received_action": action, "logs": logs}), 200\n\nif __name__ == '__main__':\n    app.run(host='0.0.0.0', port=5000)
+ 1415  cat << 'EOF' > README.md\n# Resilient SOC Case File #003 — Operation Autopilot (SOAR Integration)\n\n## 1. Executive Summary & Context\nBuilding directly upon **Case File #001** and **Case File #002 (Operation Nightfall)**, this project introduces an orchestration and automated response layer to transform standard SOC monitoring into an automated, proactive incident response pipeline. While detection and triage form the foundation, **Operation Autopilot** bridges the gap between identification and containment using Shuffle SOAR, TheHive, Cortex, and a custom Flask webhook handling Human-in-the-Loop (HITL) decisions.\n\n---\n\n## 2. Core Architecture & Topology\nThe environment is structured to separate detection, case management, enrichment, and orchestration across integrated nodes:\n\n* **Host / OS:** Kali Linux (Host environment)\n* **TheHive (v5.7.5 / v5.2):** Case & Incident Management (`http://192.168.1.11:9000`)\n* **Cortex (v4.1.0 / v3.1.7):** Automated IOC Enrichment (`http://192.168.1.11:9001/cortex`)\n* **Shuffle SOAR:** Playbook Automation & Orchestration (`http://192.168.1.11:3001`)\n* **Splunk:** Detection Engineering & Alert Trigger Source\n* **Custom Flask Webhook Integration Layer (`soar_webhook.py`):** Acts as the bridge processing `approve`/`reject` actions and programmatically pushing structured audit logs to TheHive API (`POST /api/v1/case/{case_id}/log`).\n\n---\n\n## 3. End-to-End (E2E) Workflow Pipeline\n1. **Detection:** Splunk triggers an alert based on correlation rules (e.g., archive activity followed by log clearance).\n2. **Orchestration:** Shuffle receives the Webhook payload from Splunk.\n3. **Case Creation:** Shuffle automatically initializes a new case inside TheHive via API (HTTP 201).\n4. **Dynamic Extraction:** TheHive extracts observables dynamically (e.g., IP address extraction: `$thehive_2.body.0.data`).\n5. **Enrichment:** Cortex receives the observable and triggers analyzers for deep telemetry context.\n6. **Human-in-the-Loop (HITL):** An alert notification is dispatched to the analyst. **Blind automation is avoided** on critical actions; human authorization is mandatory.\n7. **Webhook & API Synchronization:** The custom Flask server (`soar_webhook.py`) parses the decision (`approve` / `reject`) and updates the case timeline and audit logs programmatically inside TheHive.\n\n---\n\n## 4. Implementation Artifacts\n\n### A. Custom Flask Webhook Server (`soar_webhook.py`)\n```python\nfrom flask import Flask, request, jsonify\nimport requests\n\napp = Flask(__name__)\n\nTHEHIVE_URL = "[http://192.168.1.11:9000](http://192.168.1.11:9000)"\nTHEHIVE_API_KEY = "<REDACTED>"\n\n@app.route('/api/v1/webhook', methods=['POST'])\ndef receive_webhook():\n    data = request.json\n    action = data.get('action')\n    case_id = data.get('case_id')\n    \n    print(f"[+] Received Action: {action} for Case ID: {case_id}")\n    \n    if action == 'approve':\n        logs = ["Enrichment Completed", "Analyst Approved", "Containment Simulated"]\n    elif action == 'reject':\n        logs = ["Enrichment Completed", "Analyst Rejected", "Escalated"]\n    else:\n        return jsonify({"error": "Invalid action"}), 400\n\n    if case_id:\n        headers = {\n            "Authorization": f"Bearer {THEHIVE_API_KEY}",\n            "Content-Type": "application/json"\n        }\n        for log in logs:\n            payload = {"message": log}\n            try:\n                requests.post(f"{THEHIVE_URL}/api/v1/case/{case_id}/log", json=payload, headers=headers)\n            except Exception as e:\n                print(f"[-] Failed to send log to TheHive: {e}")\n\n    return jsonify({"status": "success", "received_action": action, "logs": logs}), 200\n\nif __name__ == '__main__':\n    app.run(host='0.0.0.0', port=5000)
+ 1416  cat << 'EOF' > README.md\n# Resilient SOC Case File #003 — Operation Autopilot (SOAR Integration)\n\n## 1. Executive Summary & Context\nBuilding directly upon **Case File #001** and **Case File #002 (Operation Nightfall)**, this project introduces an orchestration and automated response layer to transform standard SOC monitoring into an automated, proactive incident response pipeline. While detection and triage form the foundation, **Operation Autopilot** bridges the gap between identification and containment using Shuffle SOAR, TheHive, Cortex, and a custom Flask webhook handling Human-in-the-Loop (HITL) decisions.\n\n---\n\n## 2. Core Architecture & Topology\nThe environment is structured to separate detection, case management, enrichment, and orchestration across integrated nodes:\n\n* **Host / OS:** Kali Linux (Host environment)\n* **TheHive (v5.7.5 / v5.2):** Case & Incident Management (`http://192.168.1.11:9000`)\n* **Cortex (v4.1.0 / v3.1.7):** Automated IOC Enrichment (`http://192.168.1.11:9001/cortex`)\n* **Shuffle SOAR:** Playbook Automation & Orchestration (`http://192.168.1.11:3001`)\n* **Splunk:** Detection Engineering & Alert Trigger Source\n* **Custom Flask Webhook Integration Layer (`soar_webhook.py`):** Acts as the bridge processing `approve`/`reject` actions and programmatically pushing structured audit logs to TheHive API (`POST /api/v1/case/{case_id}/log`).\n\n---\n\n## 3. End-to-End (E2E) Workflow Pipeline\n1. **Detection:** Splunk triggers an alert based on correlation rules (e.g., archive activity followed by log clearance).\n2. **Orchestration:** Shuffle receives the Webhook payload from Splunk.\n3. **Case Creation:** Shuffle automatically initializes a new case inside TheHive via API (HTTP 201).\n4. **Dynamic Extraction:** TheHive extracts observables dynamically (e.g., IP address extraction: `$thehive_2.body.0.data`).\n5. **Enrichment:** Cortex receives the observable and triggers analyzers for deep telemetry context.\n6. **Human-in-the-Loop (HITL):** An alert notification is dispatched to the analyst. **Blind automation is avoided** on critical actions; human authorization is mandatory.\n7. **Webhook & API Synchronization:** The custom Flask server (`soar_webhook.py`) parses the decision (`approve` / `reject`) and updates the case timeline and audit logs programmatically inside TheHive.\n\n---\n\n## 4. Implementation Artifacts\n\n### A. Custom Flask Webhook Server (`soar_webhook.py`)\n```python\nfrom flask import Flask, request, jsonify\nimport requests\n\napp = Flask(__name__)\n\nTHEHIVE_URL = "[http://192.168.1.11:9000](http://192.168.1.11:9000)"\nTHEHIVE_API_KEY = "<REDACTED>"\n\n@app.route('/api/v1/webhook', methods=['POST'])\ndef receive_webhook():\n    data = request.json\n    action = data.get('action')\n    case_id = data.get('case_id')\n    \n    print(f"[+] Received Action: {action} for Case ID: {case_id}")\n    \n    if action == 'approve':\n        logs = ["Enrichment Completed", "Analyst Approved", "Containment Simulated"]\n    elif action == 'reject':\n        logs = ["Enrichment Completed", "Analyst Rejected", "Escalated"]\n    else:\n        return jsonify({"error": "Invalid action"}), 400\n\n    if case_id:\n        headers = {\n            "Authorization": f"Bearer {THEHIVE_API_KEY}",\n            "Content-Type": "application/json"\n        }\n        for log in logs:\n            payload = {"message": log}\n            try:\n                requests.post(f"{THEHIVE_URL}/api/v1/case/{case_id}/log", json=payload, headers=headers)\n            except Exception as e:\n                print(f"[-] Failed to send log to TheHive: {e}")\n\n    return jsonify({"status": "success", "received_action": action, "logs": logs}), 200\n\nif __name__ == '__main__':\n    app.run(host='0.0.0.0', port=5000)\n# Disable Active Directory Account (Simulated)\nDisable-ADAccount -Identity "sfahmy"\nGet-ADUser -Identity "sfahmy" | Select-Object Enabled\n\n# Network Isolation via Windows Firewall (Simulated)\nInvoke-Command -ComputerName fin-workstation01 -ScriptBlock {\n    New-NetFirewallRule -DisplayName "SOC-Isolation" -Direction Outbound -Action Block -RemoteAddress Any\n}
+ 1419  ls -lh ~/resilient-soar/Resilient_SOC_Case_File_003/README.md
+ 1420  cat > ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n# Resilient SOC Case File #003 — Operation Autopilot\n## From Detection to Automated Response: SOAR Integration Lab\n\n**Team:** Resilient SOC  \n**Platform:** Kali Linux  \n**Project:** `~/resilient-soar`  \n**Date:** 03 September 2026\n\n---\n\n## 1. Executive Summary\n\nOperation Autopilot is a defensive SOAR integration lab demonstrating the flow from a TheHive observable through Shuffle orchestration and Cortex enrichment, followed by analyst decision-making, simulated response, case updating, and notification.\n\nThe primary test observable was:\n\n`8.8.8.8`\n\nValidated dynamic mapping:\n\n`$thehive_2.body.0.data`\n\nwhich resolved to:\n\n`8.8.8.8`\n\n---\n\n## 2. Environment\n\n| Component | Version | URL / Port |\n|---|---|---|\n| Kali Linux | Host OS | — |\n| Docker | 28.5.2+dfsg4 | — |\n| Docker Compose | 2.40.3-3 | — |\n| TheHive | 5.7.5 | `http://192.168.1.11:9000` |\n| Cortex | 4.1.0 | `http://192.168.1.11:9001/cortex` |\n| Elasticsearch | 8.19.20 | Internal |\n| Cassandra | 4.1.12 | Internal |\n| Shuffle | Lab deployment | `http://192.168.1.11:3001` |\n| Nginx | 1.31.4 | 443 |\n| Mailhog | latest | 8025 / 1025 |\n\nProject root:\n\n`~/resilient-soar`\n\nCompose file:\n\n`~/resilient-soar/docker/testing/docker-compose.yml`\n\n---\n\n## 3. Architecture\n\n```text\nTheHive\n   ↓\nShuffle\n   ↓\nTheHive 2\n   ↓\nDynamic Observable Extraction\n   ↓\nCortex_1\n   ↓\nAnalyzer\n   ↓\nAnalysis Result\n   ↓\nHuman Approval\n   ↙        ↘\nApprove    Reject\n   ↓          ↓\nSimulated   Escalation\nContainment\n   ↘        ↙\n      TheHive Update\n           ↓\n      Notification\nEOF
+ 1421  wc -l ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md
+ 1422  cd ~/resilient-soar && mkdir -p Resilient_SOC_Case_File_003/Documentation && touch Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md
+ 1423  cat > ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n# Resilient SOC Case File #003 — Operation Autopilot\n\n## From Detection to Automated Response: SOAR Integration Lab\n\n**Team:** Resilient SOC  \n**Case File:** #003  \n**Operation:** Autopilot  \n**Date:** 03 September 2026  \n**Environment:** Kali Linux / Docker / TheHive / Cortex / Shuffle\n\n---\n\n# 1. Executive Summary\n\n## 1.1 Overview\n\n**Resilient SOC Case File #003 — Operation Autopilot** is a defensive Security Orchestration, Automation, and Response (SOAR) training lab designed to demonstrate how security events and observables can move through an automated investigation and response pipeline.\n\nThe lab combines:\n\n- TheHive for Case and Observable management.\n- Cortex for automated analysis and enrichment.\n- Shuffle for workflow orchestration.\n- Python/Flask for Human-in-the-Loop decision handling.\n- Mailhog/Email capability for analyst notification.\n- Docker for isolated and reproducible deployment.\n\nThe primary objective was to move beyond isolated tool testing and demonstrate a connected workflow in which information generated by one security platform becomes input to the next platform automatically.\n\n---\n\n## 1.2 Operational Goal\n\nThe target architecture was:\n\n```text\nTheHive\n   ↓\nShuffle\n   ↓\nTheHive Observable Retrieval\n   ↓\nDynamic Observable Mapping\n   ↓\nCortex Enrichment\n   ↓\nAnalysis Result\n   ↓\nHuman Analyst Decision\n   ↓\nSimulated Response\n   ↓\nTheHive Case Update\n   ↓\nNotification\nEDF\nEOF
+ 1424  cat >> ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n\n# 2. Lab Objectives\n\n## 2.1 Primary Objective\n\nThe primary objective of Operation Autopilot was to build and validate a defensive SOAR pipeline that connects case management, automated enrichment, workflow orchestration, analyst decision-making, simulated response, and case tracking.\n\nThe lab was designed to demonstrate how a Security Operations Center can move from a manually observed indicator to an orchestrated response process while maintaining analyst control over potentially impactful actions.\n\n## 2.2 Technical Objectives\n\nThe technical objectives of the lab were:\n\n1. Deploy the required security platforms in an isolated Docker-based environment.\n2. Configure and validate TheHive as the central case-management platform.\n3. Deploy and validate Cortex as the analysis and enrichment platform.\n4. Establish and verify TheHive ↔ Cortex integration.\n5. Validate Cortex API authentication using Bearer <REDACTED>\n6. Register and execute a Cortex analyzer successfully.\n7. Deploy and configure Shuffle as the SOAR orchestration layer.\n8. Validate Shuffle → TheHive integration.\n9. Retrieve Case and Observable information dynamically from TheHive.\n10. Replace static test values with dynamic workflow data.\n11. Pass the extracted Observable from Shuffle into Cortex.\n12. Validate Cortex analyzer invocation from Shuffle.\n13. Introduce a Human-in-the-Loop decision point.\n14. Support both Approve and Reject paths.\n15. Simulate containment and escalation actions safely.\n16. Return workflow results to the originating TheHive Case.\n17. Provide notification capability for analyst awareness.\n18. Validate the complete automation chain.\n19. Capture reproducible evidence for every major stage.\n20. Produce a technical documentation package suitable for team handoff and future lab reproduction.\n\n## 2.3 SOAR Learning Objectives\n\nThe lab also aimed to demonstrate the operational concepts behind SOAR:\n\n### Orchestration\n\nMultiple security products must work together as a single workflow instead of operating as isolated tools.\n\n### Automation\n\nRepeated investigation tasks should be handled automatically when appropriate, reducing unnecessary manual work.\n\n### Enrichment\n\nSecurity Observables should be enriched with contextual intelligence before an analyst makes a decision.\n\n### Human-in-the-Loop\n\nAutomation should not remove analyst control over higher-impact actions. The workflow therefore includes an explicit approval/rejection decision point.\n\n### Safe Response\n\nResponse actions in the training environment are simulated so that the workflow can demonstrate containment and escalation logic without affecting production assets.\n\n### Case Continuity\n\nInvestigation results and response decisions should remain linked to the originating TheHive Case.\n\n## 2.4 Expected Outcome\n\nAt the end of the lab, the intended workflow was:\n\n```text\nTheHive Observable\n        ↓\n      Shuffle\n        ↓\n   Observable Retrieval\n        ↓\n Dynamic IP Mapping\n        ↓\n      Cortex\n        ↓\n     Analyzer\n        ↓\n Analysis Result\n        ↓\n Human Decision\n      ↙     ↘\n Approve   Reject\n    ↓         ↓\nSimulated   Escalation\nContainment\n      ↘     ↙\n    TheHive Update\n          ↓\n     Notification\nEDF\nEOF
+ 1425  cat >> ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n\n# 3. Environment & Infrastructure\n\n## 3.1 Host Environment\n\nThe SOAR lab was built and tested on:\n\n```text\nOperating System: Kali Linux\nProject Directory: ~/resilient-soar\nEOF
+ 1426  cat >> ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\nEOF
+ 1427  cat >> ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n\n# 4. TheHive Setup & Validation\n\n## 4.1 TheHive Platform\n\nTheHive was deployed as the central case-management component of the lab.\n\nVersion:\n\n```text\n5.7.5\nEOF
+ 1428  cat >> ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n\n# 5. Cortex Configuration & API Validation\n\n## 5.1 Cortex Platform\n\nCortex was deployed as the automated analysis and enrichment engine of the SOAR lab.\n\nVersion:\n\n```text\n4.1.0\nEOF
+ 1429  cat >> ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n\n# 6. Cortex Analyzer Validation\n\n## 6.1 TestAnalyzer\n\nThe initial Cortex analyzer used to validate the analysis pipeline was:\n\n```text\nTestAnalyzer_1_0\nEOF
+ 1430  cat >> ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n\n# 7. IPinfo Analyzer Investigation\n\n## 7.1 Required Analyzer\n\nThe original task specification required the Cortex analyzer:\n\n```text\nIPinfo_1_3\nEOF\n
+ 1431  cat >> ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n\n# 8. Shuffle Integration\n\n## 8.1 Shuffle Platform\n\nShuffle was used as the central SOAR orchestration layer for the lab.\n\nURL:\n\n```text\nhttp://192.168.1.11:3001\nEOF\n
+ 1432  cat >> ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n\n# 9. Dynamic Observable Mapping\n\n## 9.1 Initial Problem\n\nThe Cortex workflow initially received an empty input value:\n\n```text\ndata: ""\nEOF
+ 1433  cat >> ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n\n# 10. Cortex_1 — Run Analyzer from Shuffle\n\n## 10.1 Node Configuration\n\nThe Shuffle workflow uses the Cortex node:\n\n```text\nCortex_1\nEOF
+ 1434  sed -n '1,260p' ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md
+ 1435  tail -80 ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md
+ 1437  tail -80 ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md
+ 1438  rm -f ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md && cat > ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md <<'EOF'\n# Resilient SOC Case File #003 — Operation Autopilot\n\n## From Detection to Automated Response: SOAR Integration Lab\n\n**Team:** Resilient SOC  \n**Case File:** #003  \n**Operation:** Autopilot  \n**Date:** 03 September 2026  \n**Environment:** Kali Linux / Docker / TheHive / Cortex / Shuffle\n\n---\n\n# 1. Executive Summary\n\n## 1.1 Overview\n\nResilient SOC Case File #003 — Operation Autopilot is a defensive SOAR training lab designed to demonstrate how security observables can move through a connected investigation and response workflow.\n\nThe lab integrates:\n\n- TheHive for case and observable management.\n- Cortex for automated analysis and enrichment.\n- Shuffle for workflow orchestration.\n- Python/Flask for Human-in-the-Loop decision handling.\n- Mailhog/Email for lab notification.\n- Docker for isolated infrastructure.\n\n## 1.2 Operational Goal\n\nThe target workflow is:\n\n```text\nTheHive\n   ↓\nShuffle\n   ↓\nTheHive Observable Retrieval\n   ↓\nDynamic Observable Mapping\n   ↓\nCortex Enrichment\n   ↓\nAnalysis Result\n   ↓\nHuman Analyst Decision\n   ↓\nSimulated Response\n   ↓\nTheHive Case Update\n   ↓\nNotification\nEOF
+ 1439  wc -l ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md
+ 1440  python3 - <<'PY'\nfrom pathlib import Path\n\np = Path.home() / "resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md"\n\ntext = """# Resilient SOC Case File #003 — Operation Autopilot\n## From Detection to Automated Response: SOAR Integration Lab\n\n**Team:** Resilient SOC  \n**Case File:** #003  \n**Operation:** Autopilot  \n**Date:** 03 September 2026  \n**Environment:** Kali Linux / Docker / TheHive / Cortex / Shuffle\n\n---\n\n# 1. Executive Summary\n\nOperation Autopilot is a defensive SOAR training lab demonstrating an integrated security workflow connecting TheHive, Shuffle, Cortex, Human-in-the-Loop decision handling, simulated response, case updates, and notification.\n\nThe primary test Observable was:\n\n`8.8.8.8`\n\nThe main technical achievement was dynamic extraction of the Observable from TheHive using:\n\n`$thehive_2.body.0.data`\n\nwhich resolved to:\n\n`8.8.8.8`\n\nThe final logical workflow is:\n\n```text\nTheHive\n   ↓\nShuffle\n   ↓\nTheHive Observable Retrieval\n   ↓\nDynamic Observable Mapping\n   ↓\nCortex\n   ↓\nAnalysis\n   ↓\nHuman Decision\n   ↙        ↘\nApprove    Reject\n   ↓          ↓\nSimulated   Escalation\nContainment\n   ↘        ↙\n      TheHive Update\n           ↓\n      Notification\nEOF
+ 1441  cd ~/resilient-soar && grep -nE 'heredoc>|^EOF$|^EDF$' Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md
+ 1442  wc -l ~/resilient-soar/Resilient_SOC_Case_File_003/Documentation/Case_File_003_Operation_Autopilot.md
+ 1443  cd ~/resilient-soar && find Resilient_SOC_Case_File_003 -maxdepth 3 -type f | sort
+ 1444  cd ~/resilient-soar && mkdir -p Resilient_SOC_Case_File_003/{Evidence/Screenshots,Commands,Configuration/Sanitized_Configurations,Team_Handoff} && printf '%s\n' '# Evidence Index' '' 'E-01 Docker Stack' 'E-02 TheHive Case' 'E-03 Observable 8.8.8.8' 'E-04 TheHive-Cortex Connection' 'E-05 Cortex Analyzer' 'E-06 TestAnalyzer Success' 'E-07 Shuffle Workflow' 'E-08 TheHive 2 Query' 'E-09 Dynamic IP Mapping' 'E-10 Cortex_1 Success' 'E-11 Human Approval' 'E-12 Reject Path' 'E-13 Response Simulation' 'E-14 TheHive Update' 'E-15 Notification' 'E-16 Final E2E' 'E-17 Credential Rotation' > Resilient_SOC_Case_File_003/Evidence/Evidence_Index.md && printf '%s\n' '# Commands Reference' '' 'Project: ~/resilient-soar' '' 'TheHive: http://192.168.1.11:9000' 'Cortex: http://192.168.1.11:9001/cortex' 'Shuffle: http://192.168.1.11:3001' '' 'Dynamic mapping: $thehive_2.body.0.data' '' 'Do not store real API keys or passwords here.' > Resilient_SOC_Case_File_003/Commands/Commands_Reference.md && printf '%s\n' '# Team Handoff — Operation Autopilot' '' 'Core SOAR integration completed.' '' 'Validated: TheHive, Cortex, Shuffle, dynamic Observable mapping, Cortex HTTP 200, Human-in-the-Loop, and safe response simulation.' '' 'Remaining finalization: final E2E evidence, notification proof, screenshot collection, and credential rotation.' '' 'No production containment actions are part of this lab.' > Resilient_SOC_Case_File_003/Team_Handoff/Team_Handoff.md && printf '%s\n' '# Sanitized Configurations' '' 'Use <REDACTED>, <CORTEX_API_KEY>, and <THEHIVE_API_KEY> instead of real credentials.' > Resilient_SOC_Case_File_003/Configuration/Sanitized_Configurations/README.md
+ 1445  cd ~/resilient-soar && zip -qr Resilient_SOC_Case_File_003.zip Resilient_SOC_Case_File_003 && ls -lh Resilient_SOC_Case_File_003.zip
