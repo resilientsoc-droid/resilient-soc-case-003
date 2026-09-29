@@ -18,11 +18,11 @@
 
 ---
 
-## 📌 Overview
+## Overview
 
 Case File #003 scales the manual investigations of Case Files #001 and #002 into a fully orchestrated Incident Response pipeline. A case created in **TheHive** triggers a **Shuffle** workflow that pulls the observable, enriches it with a **Cortex** analyzer, asks a human analyst to **approve or reject**, runs a **simulated** response, then updates the case and sends a notification.
 
-> ⚠️ This is a **training lab**. No production containment is performed — all response actions are simulated.
+> This is a **training lab**. No production containment is performed — all response actions are simulated.
 
 ## 🔄 Workflow
 
@@ -46,7 +46,7 @@ Notification (MailHog)
 
 Primary test observable: `8.8.8.8`
 
-## 🧱 Architecture
+## Architecture
 
 | Component | Role | Lab URL |
 |---|---|---|
@@ -60,7 +60,7 @@ Primary test observable: `8.8.8.8`
 
 **Environment:** Kali Linux (VMware) · Docker · TheHive · Cortex · Shuffle
 
-## ✅ What Was Built
+## What Was Built
 
 See the full checklist in [COMPLETED_TASKS.md](COMPLETED_TASKS.md). Highlights:
 
@@ -70,7 +70,7 @@ See the full checklist in [COMPLETED_TASKS.md](COMPLETED_TASKS.md). Highlights:
 - Human-in-the-Loop approve and reject paths through a webhook receiver
 - Simulated response, TheHive case update and email notification
 
-## 🖼️ Selected Evidence
+##  Selected Evidence
 
 | | |
 |---|---|
@@ -93,14 +93,14 @@ Full list: [Evidence/Evidence_Index.md](Evidence/Evidence_Index.md)
 └── Team_Handoff/           Handoff notes
 ```
 
-## 🔐 Security Notes
+## Security Notes
 
 - All credentials, API keys and webhook IDs are replaced by placeholders: `<CORTEX_API_KEY>`, `<THEHIVE_API_KEY>`, `<THEHIVE_PASSWORD>`, `<ELASTIC_PASSWORD>`, `<WEBHOOK_ID>`.
 - Lab IPs are written as `<LAB_IP>` (in the screenshots the lab address is still visible).
 - Any key that ever appeared in a terminal history or screenshot **must be rotated** (Evidence E-17).
 - Do not reuse the lab's default passwords anywhere else.
 
-## 📚 Read Next
+## Read Next
 
 1. [Documentation/Case_File_003_Operation_Autopilot.md](Documentation/Case_File_003_Operation_Autopilot.md)
 2. [Team_Handoff/Team_Handoff.md](Team_Handoff/Team_Handoff.md)
