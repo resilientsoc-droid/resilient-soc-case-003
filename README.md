@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛡️ Resilient SOC — Case File #003
+# Resilient SOC — Case File #003
 ## Operation Autopilot
 
 **From detection to automated response — a SOAR integration lab built with open-source tools.**
